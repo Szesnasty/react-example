@@ -28,14 +28,13 @@ export const renderStepConnectorElement = (orientation: StepperOrientation) => {
 
 export const renderStepIconElement = <TStep extends StepItem>(
   view: StepView<TStep>,
-  orientation: StepperOrientation,
   renderStepIcon?: StepRenderer<TStep>,
 ) => {
   if (renderStepIcon) {
     return renderStepIcon(view)
   }
 
-  return <StepStatusIcon status={view.status} orientation={orientation} icon={view.step.icon} />
+  return <StepStatusIcon status={view.status} icon={view.step.icon} />
 }
 
 export const renderVisibleLabel = <TStep extends StepItem>(

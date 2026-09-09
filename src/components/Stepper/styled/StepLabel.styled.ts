@@ -23,7 +23,6 @@ export const StyledVisuallyHiddenText = styled('span')({
 
 export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => {
   const statusColors = stepLabelStatusColors(theme)
-  const sizes = stepperSizes(theme)
 
   return {
     [`&.${stepLabelClasses.vertical}`]: {
@@ -31,23 +30,23 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => {
       alignItems: 'flex-start',
 
       [`& .${stepLabelClasses.iconContainer}`]: {
-        paddingRight: sizes.vertical.iconGap,
+        paddingRight: stepperSizes.verticalIconGap,
       },
       [`& .${stepLabelClasses.labelContainer}`]: {
-        paddingTop: sizes.vertical.labelCapOffset,
+        paddingTop: stepperSizes.verticalLabelCapOffset,
         alignItems: 'flex-start',
-        gap: sizes.vertical.labelParagraphGap,
-        fontSize: sizes.vertical.labelFontSize,
-        lineHeight: sizes.vertical.labelLineHeight,
+        gap: stepperSizes.verticalLabelParagraphGap,
+        fontSize: stepperSizes.verticalLabelFontSize,
+        lineHeight: stepperSizes.verticalLabelLineHeight,
       },
     },
 
     [`&.${stepLabelClasses.alternativeLabel}`]: {
       [`& .${stepLabelClasses.labelContainer}`]: {
         alignItems: 'center',
-        gap: sizes.horizontal.labelParagraphGap,
-        fontSize: sizes.horizontal.labelFontSize,
-        lineHeight: sizes.horizontal.labelLineHeight,
+        gap: stepperSizes.horizontalLabelParagraphGap,
+        fontSize: stepperSizes.horizontalLabelFontSize,
+        lineHeight: stepperSizes.horizontalLabelLineHeight,
       },
     },
 
@@ -60,23 +59,28 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => {
       fontWeight: theme.typography.fontWeightRegular,
     },
 
+    // Horizontal keeps every title the same colour; only the weight marks the active step.
     [`& .${stepLabelClasses.label}`]: {
-      color: statusColors.upcoming,
+      color: statusColors.completed,
       fontSize: 'inherit',
       lineHeight: 'inherit',
       fontWeight: theme.typography.fontWeightRegular,
 
+      [`&.${stepLabelClasses.active}`]: {
+        fontWeight: theme.typography.fontWeightBold,
+      },
+    },
+
+    // Vertical is where the state also shows in the colour of the title.
+    [`&.${stepLabelClasses.vertical} .${stepLabelClasses.label}`]: {
       [`&.${stepLabelClasses.completed}`]: {
         color: statusColors.completed,
-        fontWeight: theme.typography.fontWeightRegular,
       },
       [`&.${stepLabelClasses.active}`]: {
         color: statusColors.active,
-        fontWeight: theme.typography.fontWeightBold,
       },
       [`&.${stepLabelClasses.disabled}`]: {
         color: statusColors.upcoming,
-        fontWeight: theme.typography.fontWeightRegular,
       },
     },
   }

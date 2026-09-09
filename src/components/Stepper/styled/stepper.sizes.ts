@@ -1,123 +1,55 @@
-import type { Theme } from '@mui/material'
-
-import type { StepperOrientation } from '../stepper.models'
-
-/** Px only for the arithmetic below — every value that reaches CSS is converted to rem. */
-const ICON_SIZE_PX: Record<StepperOrientation, number> = { horizontal: 32, vertical: 24 }
-const ICON_GAP_PX: Record<StepperOrientation, number> = { horizontal: 8, vertical: 12 }
-const CHECK_ICON_SIZE_PX: Record<StepperOrientation, number> = { horizontal: 18, vertical: 14 }
-const LABEL_FONT_SIZE_PX: Record<StepperOrientation, number> = { horizontal: 14, vertical: 16 }
-const LABEL_LINE_HEIGHT_PX: Record<StepperOrientation, number> = { horizontal: 20, vertical: 24 }
-const LABEL_PARAGRAPH_GAP_PX: Record<StepperOrientation, number> = { horizontal: 14, vertical: 0 }
-
-const CONNECTOR_THICKNESS_PX = 1
-/** How far a line stops short of a circle — it should read as running from one to the next. */
-const LINE_END_GAP_PX = 4
-/** Kept apart from the line: a 1px focus ring would be too faint to spot. */
-const FOCUS_OUTLINE_WIDTH_PX = 2
-const FOCUS_OUTLINE_OFFSET_PX = 2
-
-const HOVER_RING_GAP_PX = 2
-const HOVER_RING_WIDTH_PX = 2
-const ROOT_PADDING_BLOCK_PX = 8
-const BUTTON_PADDING_BLOCK_PX = 4
-const BUTTON_PADDING_INLINE_PX = 8
-const VERTICAL_STEP_GAP_PX = 16
-
 /**
- * Poppins metrics, measured against a rendered page: the content box is about 1.4em tall
- * and the top of a capital sits about 0.362em below the top of that box.
+ * Every size is a rem literal, with the px it renders to at a 16px root in the comment.
+ *
+ * They are written out rather than derived through `theme.typography.pxToRem`, which multiplies
+ * by `typography.fontSize / 14` — in a theme that sets its own font size that helper would
+ * quietly resize the whole component (with `fontSize: 16` a 24px circle comes out as 27.4px).
  */
-const FONT_CONTENT_RATIO = 1.4
-const FONT_CAP_TOP_RATIO = 0.362
+export const stepperSizes = {
+  /** The circle is the same size in both orientations. */
+  iconSize: '1.5rem', // 24px
+  /** The box the check sits in; the glyph inside it measures 8 x 5.5px. */
+  checkIconSize: '0.75rem', // 12px
 
-const capTopOffsetPx = (fontSizePx: number, lineHeightPx: number) =>
-  (lineHeightPx - FONT_CONTENT_RATIO * fontSizePx) / 2 + FONT_CAP_TOP_RATIO * fontSizePx
+  connectorThickness: '0.0625rem', // 1px
+  /** How far a line stops short of a circle, in both orientations. */
+  lineEndGap: '0.375rem', // 6px
+  /** Left edge of a vertical line: half the circle minus half the line, so it runs through the centre. */
+  lineOffset: '0.71875rem', // 11.5px
+  /** How far a horizontal line starts from the centre of its step: half the circle plus the end gap. */
+  lineInset: '1.125rem', // 18px
 
-export type StepperOrientationSizes = {
-  iconSize: string
-  iconGap: string
-  checkIconSize: string
-  /** Distance from the left edge of a circle to the text beside it. */
-  contentIndent: string
-  /** Left position of a vertical line so that it runs through the centre of the circles. */
-  lineOffset: string
-  /** How far a horizontal line starts from the centre of its step. */
-  lineInset: string
-  labelFontSize: string
-  labelLineHeight: string
-  labelParagraphGap: string
-  /** Pushes a vertical label down so the tops of its letters meet the middle of the circle. */
-  labelCapOffset: string
-}
-
-export type StepperSizes = {
-  horizontal: StepperOrientationSizes
-  vertical: StepperOrientationSizes
-  connectorThickness: string
-  lineEndGap: string
-  focusOutlineWidth: string
-  focusOutlineOffset: string
   /** Breathing room between the circle and its hover ring. */
-  hoverRingGap: string
+  hoverRingGap: '0.125rem', // 2px
   /** Outer edge of the hover ring, measured from the circle. */
-  hoverRingOuter: string
-  rootPaddingBlock: string
-  buttonPaddingBlock: string
-  buttonPaddingInline: string
-  /** Space below a vertical step, which is also how far the line runs. */
-  verticalStepGap: string
-  /** `shape.borderRadius` may already be a CSS string, so only a raw number is converted. */
-  buttonRadius: string
-}
+  hoverRingOuter: '0.25rem', // 4px
+  /** Kept apart from the line: a 1px focus ring would be too faint to spot. */
+  focusOutlineWidth: '0.125rem', // 2px
+  focusOutlineOffset: '0.125rem', // 2px
 
-const orientationSizes = (
-  theme: Theme,
-  orientation: StepperOrientation,
-): StepperOrientationSizes => {
-  const toRem = theme.typography.pxToRem
-  const iconSize = ICON_SIZE_PX[orientation]
-  const fontSize = LABEL_FONT_SIZE_PX[orientation]
-  const lineHeight = LABEL_LINE_HEIGHT_PX[orientation]
+  rootPaddingBlock: '0.5rem', // 8px
+  buttonPaddingBlock: '0.25rem', // 4px
+  buttonPaddingInline: '0.5rem', // 8px
 
-  return {
-    iconSize: toRem(iconSize),
-    iconGap: toRem(ICON_GAP_PX[orientation]),
-    checkIconSize: toRem(CHECK_ICON_SIZE_PX[orientation]),
-    contentIndent: toRem(iconSize + ICON_GAP_PX[orientation]),
-    lineOffset: toRem(iconSize / 2 - CONNECTOR_THICKNESS_PX / 2),
-    lineInset: toRem(iconSize / 2 + LINE_END_GAP_PX),
-    labelFontSize: toRem(fontSize),
-    labelLineHeight: toRem(lineHeight),
-    labelParagraphGap: toRem(LABEL_PARAGRAPH_GAP_PX[orientation]),
-    labelCapOffset: toRem(iconSize / 2 - capTopOffsetPx(fontSize, lineHeight)),
-  }
-}
+  /** Gap between the circle and the text beside it. */
+  verticalIconGap: '0.75rem', // 12px
+  /** Left edge of the step content: the circle plus that gap. */
+  verticalContentIndent: '2.25rem', // 36px
+  /** Space below a vertical step, which is also how far its line runs. */
+  verticalStepGap: '1rem', // 16px
+  /**
+   * Pushes a vertical label down so the tops of its letters sit 10px below the top of the circle:
+   * that 10px minus where Poppins puts a capital inside a 1rem/1.5rem line box.
+   * Measured against a rendered page.
+   */
+  verticalLabelCapOffset: '0.228rem', // 3.65px
 
-/**
- * Sizes are emitted in rem so the stepper scales with the browser font size (WCAG 1.4.4).
- * They are deliberately not taken from `theme.spacing`, which is in px in a stock MUI theme —
- * the stepper stays rem-based whatever spacing unit the host project uses.
- */
-export const stepperSizes = (theme: Theme): StepperSizes => {
-  const toRem = theme.typography.pxToRem
+  horizontalLabelFontSize: '0.875rem', // 14px
+  horizontalLabelLineHeight: '1.25rem', // 20px
+  /** Space between the title and the caption under it. */
+  horizontalLabelParagraphGap: '0.875rem', // 14px
 
-  return {
-    horizontal: orientationSizes(theme, 'horizontal'),
-    vertical: orientationSizes(theme, 'vertical'),
-    connectorThickness: toRem(CONNECTOR_THICKNESS_PX),
-    lineEndGap: toRem(LINE_END_GAP_PX),
-    focusOutlineWidth: toRem(FOCUS_OUTLINE_WIDTH_PX),
-    focusOutlineOffset: toRem(FOCUS_OUTLINE_OFFSET_PX),
-    hoverRingGap: toRem(HOVER_RING_GAP_PX),
-    hoverRingOuter: toRem(HOVER_RING_GAP_PX + HOVER_RING_WIDTH_PX),
-    rootPaddingBlock: toRem(ROOT_PADDING_BLOCK_PX),
-    buttonPaddingBlock: toRem(BUTTON_PADDING_BLOCK_PX),
-    buttonPaddingInline: toRem(BUTTON_PADDING_INLINE_PX),
-    verticalStepGap: toRem(VERTICAL_STEP_GAP_PX),
-    buttonRadius:
-      typeof theme.shape.borderRadius === 'number'
-        ? toRem(theme.shape.borderRadius)
-        : theme.shape.borderRadius,
-  }
+  verticalLabelFontSize: '1rem', // 16px
+  verticalLabelLineHeight: '1.5rem', // 24px
+  verticalLabelParagraphGap: '0rem', // 0px
 }

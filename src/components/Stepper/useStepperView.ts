@@ -78,7 +78,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
       isCompleted: view.status === 'completed',
       ariaCurrent: resolveAriaCurrent(view.status, isStepperInteractive),
       bodyElement: renderStepBodyElement({
-        iconElement: renderStepIconElement(view, orientation, renderStepIcon),
+        iconElement: renderStepIconElement(view, renderStepIcon),
         labelElement: renderStepLabelElement(view, statusLabels[view.status], renderStepLabel),
         captionElement: view.step.caption,
         onSelect: isStepperInteractive ? selectStep(view) : undefined,

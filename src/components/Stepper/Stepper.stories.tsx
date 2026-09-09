@@ -18,11 +18,7 @@ const steps: StepItem[] = [
 
 const stepsWithContent: StepItem[] = steps.map((step) => ({
   ...step,
-  content: (
-    <Typography variant="body2" sx={{ py: 1 }}>
-      Treść kroku „{step.label}”.
-    </Typography>
-  ),
+  content: `Treść kroku „${String(step.label)}”.`,
 }))
 
 const CheckoutWizard = (stepperProps: StepperProps) => {
@@ -75,13 +71,33 @@ const NonLinearCheckoutWizard = (stepperProps: StepperProps) => {
 const meta = {
   title: 'Components/Stepper',
   component: Stepper,
+  tags: ['autodocs'],
   args: {
     steps,
     activeStepIndex: 2,
     orientation: 'horizontal',
   },
   argTypes: {
-    steps: { control: false },
+    steps: {
+      control: 'object',
+      description:
+        'Kroki opisane danymi — tablica obiektów `StepItem`. Edytuj ją tutaj, żeby zobaczyć, jak stepper reaguje.',
+      table: {
+        type: {
+          summary: 'StepItem[]',
+          detail: [
+            '{',
+            '  id: string | number      // klucz listy, wartość w onStepChange',
+            '  label: ReactNode         // tytuł kroku',
+            '  caption?: ReactNode      // podpis pod tytułem',
+            '  content?: ReactNode      // treść pod krokiem, tylko orientation="vertical"',
+            '  icon?: ReactNode         // zamiast ptaszka i pustego kółka',
+            '  disabled?: boolean       // krok trwale niedostępny',
+            '}',
+          ].join('\n'),
+        },
+      },
+    },
     activeStepIndex: { control: { type: 'number', min: 0, max: steps.length - 1 } },
     defaultActiveStepIndex: { control: { type: 'number', min: 0 } },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
