@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Start" />
+
+# React Example
+
+Pusty szkielet: Vite + React 19 + TypeScript, MUI z motywem, Storybook, Vitest.
+Komponentów nie ma — to miejsce na nie.
+
+## Nowy komponent
+
+1. `src/components/Nazwa.tsx` — sam komponent.
+2. `src/components/Nazwa.stories.tsx` — historie; `title: 'Components/Nazwa'`.
+3. Test dymny (`src/test/storybook-smoke.test.tsx`) znajdzie nowe historie sam,
+   bo zbiera pliki `*.stories.tsx` przez `import.meta.glob`.
+
+## Otoczenie historii
+
+Dekorator w `.storybook/preview.tsx` opakowuje każdą historię w `ThemeProvider`
+z motywem z `src/theme.ts` oraz `CssBaseline`, więc podgląd wygląda tak samo jak
+aplikacja. Pasek narzędzi ma viewporty odpowiadające breakpointom MUI
+(`.storybook/viewports.ts`).
