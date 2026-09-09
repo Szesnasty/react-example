@@ -4,8 +4,8 @@ import type { StepStatus } from '../stepper.models'
 
 export type StepIconStatusColors = {
   background: string
-  /** Hover accent for a clickable step — a ring, drawn as a shadow so nothing shifts. */
-  hoverRing: string
+  /** Hover accent for a clickable step — a deeper shade of the circle, nothing more. */
+  hoverBackground: string
   foreground: string
 }
 
@@ -16,17 +16,17 @@ export type StepIconStatusColors = {
 export const stepIconStatusColors = (theme: Theme): Record<StepStatus, StepIconStatusColors> => ({
   completed: {
     background: theme.palette.primary.main,
-    hoverRing: theme.palette.primary.main,
+    hoverBackground: theme.palette.primary.dark,
     foreground: theme.palette.primary.contrastText,
   },
   active: {
     background: theme.palette.primary.main,
-    hoverRing: theme.palette.primary.main,
+    hoverBackground: theme.palette.primary.dark,
     foreground: theme.palette.primary.contrastText,
   },
   upcoming: {
     background: theme.palette.grey[200],
-    hoverRing: theme.palette.grey[400],
+    hoverBackground: theme.palette.grey[300],
     foreground: theme.palette.text.secondary,
   },
 })
@@ -39,6 +39,3 @@ export const stepLabelStatusColors = (theme: Theme): Record<StepStatus, string> 
 
 /** Progress is carried by the circles, so the lines stay one neutral colour throughout. */
 export const stepLineColor = (theme: Theme) => theme.palette.grey[200]
-
-/** The ring is detached from the circle by a gap painted in the surface colour. */
-export const stepIconRingGapColor = (theme: Theme) => theme.palette.background.paper

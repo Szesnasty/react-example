@@ -5,7 +5,7 @@ import { CheckIcon } from '../../../assets/icons'
 import type { StepStatus } from '../stepper.models'
 import { reducedMotionTransitionReset } from './reducedMotion'
 import { createShouldForwardProp } from './shouldForwardProp'
-import { stepIconRingGapColor, stepIconStatusColors } from './stepper.colors'
+import { stepIconStatusColors } from './stepper.colors'
 import { stepperSizes } from './stepper.sizes'
 
 export const StyledStepIconRoot = styled('span', {
@@ -25,24 +25,19 @@ export const StyledStepIconRoot = styled('span', {
     backgroundColor: statusColors.background,
     color: statusColors.foreground,
     fontSize: stepperSizes.checkIconSize,
-    // Stated explicitly so nothing in the host app can leave a ring on a resting circle —
-    // the only ring this component draws is the hover one below.
+    // Stated explicitly: this component never draws a ring or a border around a circle, so a
+    // stray one always comes from somewhere else.
     border: 0,
     boxShadow: 'none',
-    transition: theme.transitions.create(['background-color', 'color', 'box-shadow'], {
+    transition: theme.transitions.create(['background-color', 'color'], {
       duration: theme.transitions.duration.short,
     }),
     ...reducedMotionTransitionReset,
 
-    // The `:hover` sits on the circle itself rather than on the button around it: an ancestor
-    // pseudo-state is what tooling rewrites when it simulates states, and a rewrite like that can
-    // leave the ring switched on permanently. The button in the selector only limits the ring to
-    // steps that are actually clickable — a disabled one has `pointer-events: none` either way.
+    // Only the circle reacts to hover, and only on a step that is actually clickable — the button
+    // in the selector limits it, and a disabled one has `pointer-events: none` anyway.
     [`.${stepButtonClasses.root} &:hover`]: {
-      boxShadow: [
-        `0 0 0 ${stepperSizes.hoverRingGap} ${stepIconRingGapColor(theme)}`,
-        `0 0 0 ${stepperSizes.hoverRingOuter} ${statusColors.hoverRing}`,
-      ].join(', '),
+      backgroundColor: statusColors.hoverBackground,
     },
   }
 })

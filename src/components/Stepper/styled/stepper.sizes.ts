@@ -19,10 +19,6 @@ export const stepperSizes = {
   /** How far a horizontal line starts from the centre of its step: half the circle plus the end gap. */
   lineInset: '1.125rem', // 18px
 
-  /** Breathing room between the circle and its hover ring. */
-  hoverRingGap: '0.125rem', // 2px
-  /** Outer edge of the hover ring, measured from the circle. */
-  hoverRingOuter: '0.25rem', // 4px
   /** Kept apart from the line: a 1px focus ring would be too faint to spot. */
   focusOutlineWidth: '0.125rem', // 2px
   focusOutlineOffset: '0.125rem', // 2px
