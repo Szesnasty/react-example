@@ -35,8 +35,14 @@ export const stepperSizes = {
   verticalIconGap: '0.75rem', // 12px
   /** Left edge of the step content: the circle plus that gap. */
   verticalContentIndent: '2.25rem', // 36px
-  /** Space below a vertical step, which is also how far its line runs. */
-  verticalStepGap: '1rem', // 16px
+  /** Length of the line between two vertical circles. */
+  verticalLineLength: '3.125rem', // 50px
+  /**
+   * Keeps a vertical step tall enough for circle + gap + line + gap, so the next circle lands
+   * exactly `lineEndGap` under the line. A step with expanded content grows past it, and then
+   * the line stays 50px and the extra room falls below it.
+   */
+  verticalStepMinHeight: '5.375rem', // 86px = 24 + 6 + 50 + 6
   /**
    * Pushes a vertical label down so the tops of its letters sit 10px below the top of the circle:
    * that 10px minus where Poppins puts a capital inside a 1rem/1.5rem line box.

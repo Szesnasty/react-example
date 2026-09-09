@@ -34,9 +34,11 @@ export const StyledStepIconRoot = styled('span', {
     }),
     ...reducedMotionTransitionReset,
 
-    // Only the circle reacts to hover: the label and the space around it stay untouched.
-    // A disabled step has `pointer-events: none`, so an upcoming circle never lights up.
-    [`.${stepButtonClasses.root}:hover &`]: {
+    // The `:hover` sits on the circle itself rather than on the button around it: an ancestor
+    // pseudo-state is what tooling rewrites when it simulates states, and a rewrite like that can
+    // leave the ring switched on permanently. The button in the selector only limits the ring to
+    // steps that are actually clickable — a disabled one has `pointer-events: none` either way.
+    [`.${stepButtonClasses.root} &:hover`]: {
       boxShadow: [
         `0 0 0 ${stepperSizes.hoverRingGap} ${stepIconRingGapColor(theme)}`,
         `0 0 0 ${stepperSizes.hoverRingOuter} ${statusColors.hoverRing}`,

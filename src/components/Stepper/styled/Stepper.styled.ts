@@ -49,9 +49,9 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
 
   [`&.${stepClasses.vertical}`]: {
     position: 'relative',
-    paddingBottom: stepperSizes.verticalStepGap,
+    minHeight: stepperSizes.verticalStepMinHeight,
 
-    '&:last-of-type': { paddingBottom: 0 },
+    '&:last-of-type': { minHeight: 0 },
 
     // MUI's vertical connector is a fixed-height flex item, so it cannot span the gap between
     // two circles. Drawing the line on the step lets it stretch however tall the step grows.
@@ -59,7 +59,7 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
       content: '""',
       position: 'absolute',
       top: `calc(${stepperSizes.iconSize} + ${stepperSizes.lineEndGap})`,
-      bottom: stepperSizes.lineEndGap,
+      height: stepperSizes.verticalLineLength,
       left: stepperSizes.lineOffset,
       width: stepperSizes.connectorThickness,
       borderRadius: stepperSizes.connectorThickness,
