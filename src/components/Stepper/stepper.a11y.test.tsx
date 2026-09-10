@@ -7,7 +7,11 @@ import axe from 'axe-core'
 import { theme } from '../../theme'
 import { Stepper } from './Stepper'
 import type { StepItem, StepStatus } from './stepper.models'
-import { stepIconStatusColors, stepLabelColor } from './styled/stepper.colors'
+import {
+  activeStepLabelColor,
+  stepIconStatusColors,
+  stepLabelColor,
+} from './styled/stepper.colors'
 
 /** WCAG 1.4.3 level AA for text below 18.66px, which is what the labels use. */
 const MINIMUM_CONTRAST_RATIO = 4.5
@@ -49,6 +53,12 @@ describe('Stepper contrast', () => {
 
   it('keeps the label colour readable on the surface', () => {
     expect(contrastRatio(stepLabelColor(theme), surfaceColor)).toBeGreaterThanOrEqual(
+      MINIMUM_CONTRAST_RATIO,
+    )
+  })
+
+  it('keeps the active label colour readable on the surface', () => {
+    expect(contrastRatio(activeStepLabelColor(theme), surfaceColor)).toBeGreaterThanOrEqual(
       MINIMUM_CONTRAST_RATIO,
     )
   })

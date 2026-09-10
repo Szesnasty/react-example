@@ -1,7 +1,7 @@
 import { styled } from '@mui/material'
 import MuiStepLabel, { stepLabelClasses } from '@mui/material/StepLabel'
 
-import { stepLabelColor } from './stepper.colors'
+import { activeStepLabelColor, stepLabelColor } from './stepper.colors'
 import { stepperSizes } from './stepper.sizes'
 
 /**
@@ -22,7 +22,8 @@ export const StyledVisuallyHiddenText = styled('span')({
 })
 
 export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
-  // Type size is the only thing the two orientations style differently.
+  // Type size is the only thing the two orientations style differently, apart from the
+  // current step's title standing out in the main colour when the stepper is vertical.
   [`&.${stepLabelClasses.vertical}`]: {
     padding: 0,
     alignItems: 'flex-start',
@@ -64,5 +65,9 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
     fontSize: 'inherit',
     lineHeight: 'inherit',
     fontWeight: theme.typography.fontWeightRegular,
+  },
+
+  [`&&.${stepLabelClasses.vertical} .${stepLabelClasses.label}.${stepLabelClasses.active}`]: {
+    color: activeStepLabelColor(theme),
   },
 }))
