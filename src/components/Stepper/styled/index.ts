@@ -1,5 +1,4 @@
 export { StyledStep, StyledStepper } from './Stepper.styled'
 export { StyledStepCheckIcon, StyledStepIconRoot } from './StepIcon.styled'
-export { StyledStepConnector } from './StepConnector.styled'
 export { StyledStepContent } from './StepContent.styled'
 export { StyledStepLabel, StyledVisuallyHiddenText } from './StepLabel.styled'

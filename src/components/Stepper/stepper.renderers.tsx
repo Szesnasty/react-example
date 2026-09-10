@@ -2,7 +2,6 @@ import MuiStepButton from '@mui/material/StepButton'
 
 import { StepStatusIcon } from './StepStatusIcon'
 import {
-  StyledStepConnector,
   StyledStepContent,
   StyledStepLabel,
   StyledVisuallyHiddenText,
@@ -15,17 +14,6 @@ import type {
   StepView,
 } from './stepper.models'
 
-/** Horizontal only — the vertical line is drawn by the step itself. */
-const horizontalConnector = <StyledStepConnector />
-
-export const renderStepConnectorElement = (orientation: StepperOrientation) => {
-  if (orientation === 'vertical') {
-    return null
-  }
-
-  return horizontalConnector
-}
-
 export const renderStepIconElement = <TStep extends StepItem>(
   view: StepView<TStep>,
   renderStepIcon?: StepRenderer<TStep>,
@@ -37,7 +25,7 @@ export const renderStepIconElement = <TStep extends StepItem>(
   return <StepStatusIcon status={view.status} icon={view.step.icon} />
 }
 
-export const renderVisibleLabel = <TStep extends StepItem>(
+const renderVisibleLabel = <TStep extends StepItem>(
   view: StepView<TStep>,
   renderStepLabel?: StepRenderer<TStep>,
 ) => {

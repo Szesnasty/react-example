@@ -54,7 +54,7 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
   [`& .${stepLabelClasses.labelContainer}`]: {
     display: 'flex',
     flexDirection: 'column',
-    minWidth: 0,
+    // Without this a label with no break in it keeps its own width and runs into its neighbours.
     overflowWrap: 'break-word',
     color: stepLabelColor(theme),
     fontWeight: theme.typography.fontWeightRegular,
@@ -67,6 +67,9 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
     fontSize: 'inherit',
     lineHeight: 'inherit',
     fontWeight: theme.typography.fontWeightRegular,
+    // A flex item in the column, so without this it keeps its own width and spills over a step
+    // too narrow for it instead of wrapping into one.
+    maxWidth: '100%',
   },
 
   [`&&.${stepLabelClasses.vertical} .${stepLabelClasses.label}.${stepLabelClasses.active}`]: {

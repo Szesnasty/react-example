@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { LINE_LENGTH_VAR } from './styled/stepper.sizes'
+import { STEP_SIZE_VAR, stepperSizes } from './styled/stepper.sizes'
 import type {
   StepId,
   StepItem,
@@ -126,7 +126,7 @@ export const resolveStepperRootProps = (isInteractive: boolean): StepperRootProp
 }
 
 /** A bare number means rem — this component states every length in rem. */
-export const toCssLength = (value: number | string): string => {
+const toCssLength = (value: number | string): string => {
   if (typeof value === 'number') {
     return `${value}rem`
   }
@@ -134,11 +134,16 @@ export const toCssLength = (value: number | string): string => {
   return value
 }
 
-/** Hands `lineLength` to the styles as a custom property, so one prop drives both orientations. */
-export const resolveLineLengthStyle = (lineLength?: number | string): CSSProperties | undefined => {
+/**
+ * Turns `lineLength` into the room one step takes: the line plus the circle and its two gaps.
+ * One custom property then drives both orientations.
+ */
+export const resolveStepSizeStyle = (lineLength?: number | string): CSSProperties | undefined => {
   if (lineLength === undefined) {
     return undefined
   }
 
-  return { [LINE_LENGTH_VAR]: toCssLength(lineLength) } as CSSProperties
+  return {
+    [STEP_SIZE_VAR]: `calc(${stepperSizes.iconWithGaps} + ${toCssLength(lineLength)})`,
+  } as CSSProperties
 }

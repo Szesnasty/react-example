@@ -5,8 +5,11 @@
  * by `typography.fontSize / 14` — in a theme that sets its own font size that helper would
  * quietly resize the whole component (with `fontSize: 16` a 24px circle comes out as 27.4px).
  */
-/** Set on the stepper root from the `lineLength` prop; the sizes below are its fallbacks. */
-export const LINE_LENGTH_VAR = '--stepper-line-length'
+/**
+ * How much room one step takes along the stepper, set on the root from the `lineLength` prop.
+ * Left unset, each orientation falls back to its own default — see where it is read.
+ */
+export const STEP_SIZE_VAR = '--stepper-step-size'
 
 export const stepperSizes = {
   /** The circle is the same size in both orientations. */
@@ -27,6 +30,8 @@ export const stepperSizes = {
   focusOutlineOffset: '0.125rem', // 2px
 
   rootPaddingBlock: '0.5rem', // 8px
+  /** Breathing room on either side of a horizontal step, so neighbouring labels never touch. */
+  horizontalStepPaddingInline: '0.5rem', // 8px
   buttonPaddingBlock: '0.25rem', // 4px
   buttonPaddingInline: '0.5rem', // 8px
 
@@ -34,13 +39,10 @@ export const stepperSizes = {
   verticalIconGap: '0.75rem', // 12px
   /** Left edge of the step content: the circle plus that gap. */
   verticalContentIndent: '2.25rem', // 36px
-  /** How long a vertical line is when `lineLength` says nothing — there is no container to fill. */
-  verticalLineLength: '3.125rem', // 50px
-  /**
-   * Stands in for `lineLength` in the cap on a horizontal step. Large enough that the cap never
-   * bites, which is what lets the steps spread across the container when no length is given.
-   */
-  unboundedLineLength: '1000rem',
+  /** A circle with a gap on either side: what a step takes up before any line is added. */
+  iconWithGaps: '2.25rem', // 36px
+  /** How tall a step is standing up when `lineLength` says nothing: `iconWithGaps` plus 50px. */
+  verticalStepSize: '5.375rem', // 86px
   /**
    * Pushes a vertical label down so the tops of its letters sit 10px below the top of the circle:
    * that 10px minus where Poppins puts a capital inside a 1rem/1.5rem line box.

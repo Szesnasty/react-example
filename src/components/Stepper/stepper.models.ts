@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement, ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import type { SxProps, Theme } from '@mui/material'
 
 export type StepperOrientation = 'horizontal' | 'vertical'
@@ -118,7 +118,6 @@ export type StepperViewModel<TStep extends StepItem = StepItem> = {
   orientation: StepperOrientation
   /** Horizontal steppers put the label under the circle, which is MUI's alternative layout. */
   hasLabelUnderIcon: boolean
-  connectorElement: ReactElement | null
   rootProps: StepperRootProps
   /** Carries `lineLength` to the styles as a custom property. */
   rootStyle: CSSProperties | undefined

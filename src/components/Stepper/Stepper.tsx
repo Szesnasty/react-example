@@ -7,7 +7,6 @@ export const Stepper = <TStep extends StepItem = StepItem>(stepperProps: Stepper
     activeStepIndex,
     orientation,
     hasLabelUnderIcon,
-    connectorElement,
     rootProps,
     rootStyle,
     stepModels,
@@ -18,7 +17,7 @@ export const Stepper = <TStep extends StepItem = StepItem>(stepperProps: Stepper
       activeStep={activeStepIndex}
       orientation={orientation}
       alternativeLabel={hasLabelUnderIcon}
-      connector={connectorElement}
+      connector={null}
       className={stepperProps.className}
       sx={stepperProps.sx}
       aria-label={stepperProps['aria-label']}
