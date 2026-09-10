@@ -123,6 +123,16 @@ describe('Stepper', () => {
     expect(screen.getByRole('tab', { name: /Koszyk/ })).toBeDisabled()
   })
 
+  it('greys a disabled step out instead of showing it as completed', () => {
+    const withDisabled = steps.map((step) =>
+      step.id === 'payment' ? { ...step, disabled: true } : step,
+    )
+
+    const { container } = renderInTheme(<Stepper steps={withDisabled} activeStepIndex={3} />)
+
+    expect(stepStatuses(container)).toEqual(['completed', 'completed', 'upcoming', 'active'])
+  })
+
   it('turns lineLength into the room one step takes', () => {
     const { container } = renderInTheme(
       <Stepper steps={steps} activeStepIndex={1} lineLength={7} />,
@@ -291,6 +301,40 @@ describe('Stepper — extension points', () => {
     )
 
     expect(stepStatuses(container)).toEqual(['completed', 'upcoming', 'active', 'completed'])
+  })
+
+  it('opens every step for selection in non-linear mode', async () => {
+    const user = userEvent.setup()
+    const onStepChange = vi.fn()
+
+    renderInTheme(
+      <Stepper
+        steps={steps}
+        activeStepIndex={0}
+        completedStepIds={[]}
+        onStepChange={onStepChange}
+      />,
+    )
+    await user.click(screen.getByRole('tab', { name: /Podsumowanie/ }))
+
+    expect(onStepChange).toHaveBeenCalledWith(3, steps[3])
+  })
+
+  it('still blocks a step marked disabled in non-linear mode', () => {
+    const withDisabled = steps.map((step) =>
+      step.id === 'summary' ? { ...step, disabled: true } : step,
+    )
+
+    renderInTheme(
+      <Stepper
+        steps={withDisabled}
+        activeStepIndex={0}
+        completedStepIds={[]}
+        onStepChange={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByRole('tab', { name: /Podsumowanie/ })).toBeDisabled()
   })
 
   it('replaces the whole status rule through resolveStepStatus', () => {

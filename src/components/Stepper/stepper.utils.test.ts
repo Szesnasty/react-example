@@ -71,6 +71,12 @@ describe('resolveStepStatus', () => {
     )
   })
 
+  it('greys a step marked disabled instead of showing it as completed', () => {
+    expect(
+      resolveStepStatus({ step: { ...steps[0], disabled: true }, index: 0, activeStepIndex: 2 }),
+    ).toBe('upcoming')
+  })
+
   it('keeps the current step active even when it is listed as completed', () => {
     const completedStepIds = new Set(['delivery'])
 
@@ -82,16 +88,24 @@ describe('resolveStepStatus', () => {
 
 describe('isStepDisabled', () => {
   it('blocks steps ahead of us', () => {
-    expect(isStepDisabled(steps[0], 'upcoming')).toBe(true)
+    expect(isStepDisabled(steps[0], 'upcoming', false)).toBe(true)
   })
 
   it('leaves the active and completed steps enabled', () => {
-    expect(isStepDisabled(steps[0], 'active')).toBe(false)
-    expect(isStepDisabled(steps[0], 'completed')).toBe(false)
+    expect(isStepDisabled(steps[0], 'active', false)).toBe(false)
+    expect(isStepDisabled(steps[0], 'completed', false)).toBe(false)
   })
 
   it('honours a step marked disabled regardless of its position', () => {
-    expect(isStepDisabled({ ...steps[0], disabled: true }, 'completed')).toBe(true)
+    expect(isStepDisabled({ ...steps[0], disabled: true }, 'completed', false)).toBe(true)
+  })
+
+  it('leaves a step ahead of us open when the stepper is non-linear', () => {
+    expect(isStepDisabled(steps[0], 'upcoming', true)).toBe(false)
+  })
+
+  it('still honours a step marked disabled when the stepper is non-linear', () => {
+    expect(isStepDisabled({ ...steps[0], disabled: true }, 'upcoming', true)).toBe(true)
   })
 })
 

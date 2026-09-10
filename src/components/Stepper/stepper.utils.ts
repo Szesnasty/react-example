@@ -40,6 +40,11 @@ export const resolveStepStatus = <TStep extends StepItem>({
     return 'active'
   }
 
+  // A blocked step is never shown as done — it looks like one we cannot reach yet.
+  if (step.disabled) {
+    return 'upcoming'
+  }
+
   if (completedStepIds) {
     return completedStepIds.has(step.id) ? 'completed' : 'upcoming'
   }
@@ -47,12 +52,18 @@ export const resolveStepStatus = <TStep extends StepItem>({
   return index < activeStepIndex ? 'completed' : 'upcoming'
 }
 
+/** Only a linear stepper blocks a step by its position; non-linear lets you enter anywhere. */
 export const isStepDisabled = <TStep extends StepItem>(
   step: TStep,
   status: StepStatus,
+  isNonLinear: boolean,
 ): boolean => {
   if (step.disabled) {
     return true
+  }
+
+  if (isNonLinear) {
+    return false
   }
 
   return status === 'upcoming'
@@ -73,6 +84,7 @@ export const buildStepViews = <TStep extends StepItem>(
   }: BuildStepViewsOptions<TStep>,
 ): StepView<TStep>[] => {
   const lastStepIndex = steps.length - 1
+  const isNonLinear = completedStepIds !== undefined
 
   return steps.map((step, index) => {
     const status = resolveStatus({ step, index, activeStepIndex, completedStepIds })
@@ -81,7 +93,7 @@ export const buildStepViews = <TStep extends StepItem>(
       step,
       index,
       status,
-      isDisabled: isStepDisabled(step, status),
+      isDisabled: isStepDisabled(step, status, isNonLinear),
       isFirstStep: index === 0,
       isLastStep: index === lastStepIndex,
     }

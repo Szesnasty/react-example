@@ -181,7 +181,7 @@ export const Vertical: Story = {
   args: { orientation: 'vertical' },
 }
 
-/** `disabled: true` greys a step out even when it is already behind us. */
+/** `disabled: true` greys a step out and blocks it, even when it is already behind us. */
 export const DisabledStep: Story = {
   args: {
     activeStepIndex: 3,
@@ -217,7 +217,10 @@ export const HoverAccent: Story = {
   ),
 }
 
-/** Non-linear: completion comes from `completedStepIds`, so a skipped step gets no check. */
+/**
+ * Non-linear: completion comes from `completedStepIds`, so a skipped step gets no check and every
+ * step stays open — position no longer blocks anything, only `disabled` on the step itself does.
+ */
 export const NonLinear: Story = {
   render: (args) => <NonLinearCheckoutWizard {...args} />,
 }

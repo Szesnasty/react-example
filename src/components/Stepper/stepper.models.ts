@@ -18,6 +18,7 @@ export type StepItem = {
   /** Rendered under the step, vertical orientation only. */
   content?: ReactNode
   icon?: ReactNode
+  /** Blocks the step and greys it out wherever it sits, even behind the active one. */
   disabled?: boolean
   /**
    * Id of the section this step reveals. Clickable steps are tabs, and MUI asks each of them to
@@ -72,7 +73,10 @@ export type StepperProps<TStep extends StepItem = StepItem> = {
   /** Controlled mode. Without it the stepper tracks the active step itself. */
   activeStepIndex?: number
   defaultActiveStepIndex?: number
-  /** Turns on non-linear mode: completion comes from this list instead of the step position. */
+  /**
+   * Turns on non-linear mode: completion comes from this list instead of the step position, and
+   * no step is blocked by sitting ahead of the active one.
+   */
   completedStepIds?: readonly StepId[]
   orientation?: StepperOrientation
   /**
