@@ -5,6 +5,9 @@
  * by `typography.fontSize / 14` — in a theme that sets its own font size that helper would
  * quietly resize the whole component (with `fontSize: 16` a 24px circle comes out as 27.4px).
  */
+/** Set on the stepper root from the `lineLength` prop; the sizes below are its fallbacks. */
+export const LINE_LENGTH_VAR = '--stepper-line-length'
+
 export const stepperSizes = {
   /** The circle is the same size in both orientations. */
   iconSize: '1.5rem', // 24px
@@ -31,14 +34,13 @@ export const stepperSizes = {
   verticalIconGap: '0.75rem', // 12px
   /** Left edge of the step content: the circle plus that gap. */
   verticalContentIndent: '2.25rem', // 36px
-  /** Length of the line between two vertical circles. */
+  /** How long a vertical line is when `lineLength` says nothing — there is no container to fill. */
   verticalLineLength: '3.125rem', // 50px
   /**
-   * Keeps a vertical step tall enough for circle + gap + line + gap, so the next circle lands
-   * exactly `lineEndGap` under the line. A step with expanded content grows past it, and then
-   * the line stays 50px and the extra room falls below it.
+   * Stands in for `lineLength` in the cap on a horizontal step. Large enough that the cap never
+   * bites, which is what lets the steps spread across the container when no length is given.
    */
-  verticalStepMinHeight: '5.375rem', // 86px = 24 + 6 + 50 + 6
+  unboundedLineLength: '1000rem',
   /**
    * Pushes a vertical label down so the tops of its letters sit 10px below the top of the circle:
    * that 10px minus where Poppins puts a capital inside a 1rem/1.5rem line box.

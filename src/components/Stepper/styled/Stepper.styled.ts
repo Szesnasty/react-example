@@ -4,7 +4,7 @@ import { stepButtonClasses } from '@mui/material/StepButton'
 import MuiStepper from '@mui/material/Stepper'
 
 import { stepLineColor } from './stepper.colors'
-import { stepperSizes } from './stepper.sizes'
+import { LINE_LENGTH_VAR, stepperSizes } from './stepper.sizes'
 
 export const StyledStepper = styled(MuiStepper)(({ theme }) => ({
   padding: `${stepperSizes.rootPaddingBlock} 0`,
@@ -32,13 +32,26 @@ export const StyledStepper = styled(MuiStepper)(({ theme }) => ({
   },
 }))
 
+/** Circle, a gap on either side of the line, and the line itself. */
+const stepWidth = (fallbackLineLength: string) =>
+  `calc(${stepperSizes.iconSize} + ${stepperSizes.lineEndGap} * 2 + var(${LINE_LENGTH_VAR}, ${fallbackLineLength}))`
+
 export const StyledStep = styled(MuiStep)(({ theme }) => ({
   [`&.${stepClasses.horizontal}`]: {
     // The connector is positioned with a ±50% offset against its own step, so the gap to a circle
     // only stays at `lineEndGap` while every step is exactly the same width. Anything that
     // unbalances them — a min-content floor, padding on some of the steps — makes the line drift
     // towards one circle, so the width is pinned here rather than left to the surrounding styles.
-    flex: '1 1 0',
+    // With no `lineLength` the steps simply share the container out between them. Given one, the
+    // cap stops them growing past it, so the stepper keeps its shape in a container far wider
+    // than it needs. Either way they may shrink, so a narrow container is never overflowed.
+    // The target has to be `width` with an `auto` basis — as a flex-basis it would be ignored
+    // when the container sizes to its own content.
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 'auto',
+    width: stepWidth('0rem'),
+    maxWidth: stepWidth(stepperSizes.unboundedLineLength),
     minWidth: 0,
     boxSizing: 'border-box',
     padding: 0,
@@ -49,7 +62,7 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
 
   [`&.${stepClasses.vertical}`]: {
     position: 'relative',
-    minHeight: stepperSizes.verticalStepMinHeight,
+    minHeight: stepWidth(stepperSizes.verticalLineLength),
 
     '&:last-of-type': { minHeight: 0 },
 
@@ -59,7 +72,7 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
       content: '""',
       position: 'absolute',
       top: `calc(${stepperSizes.iconSize} + ${stepperSizes.lineEndGap})`,
-      height: stepperSizes.verticalLineLength,
+      height: `var(${LINE_LENGTH_VAR}, ${stepperSizes.verticalLineLength})`,
       left: stepperSizes.lineOffset,
       width: stepperSizes.connectorThickness,
       borderRadius: stepperSizes.connectorThickness,

@@ -106,6 +106,22 @@ describe('Stepper', () => {
     expect(screen.getByRole('tab', { name: /Koszyk/ })).toBeDisabled()
   })
 
+  it('hands lineLength to the styles as a custom property', () => {
+    const { container } = renderInTheme(
+      <Stepper steps={steps} activeStepIndex={1} lineLength={7} />,
+    )
+
+    expect(container.querySelector('ol')).toHaveStyle({ '--stepper-line-length': '7rem' })
+  })
+
+  it('takes a CSS length for lineLength as it is', () => {
+    const { container } = renderInTheme(
+      <Stepper steps={steps} activeStepIndex={1} lineLength="9rem" />,
+    )
+
+    expect(container.querySelector('ol')).toHaveStyle({ '--stepper-line-length': '9rem' })
+  })
+
   it('handles an empty list of steps', () => {
     const { container } = renderInTheme(<Stepper steps={[]} />)
 

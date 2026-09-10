@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react'
+import type { CSSProperties, ReactElement, ReactNode } from 'react'
 import type { SxProps, Theme } from '@mui/material'
 
 export type StepperOrientation = 'horizontal' | 'vertical'
@@ -70,6 +70,15 @@ export type StepperProps<TStep extends StepItem = StepItem> = {
   /** Turns on non-linear mode: completion comes from this list instead of the step position. */
   completedStepIds?: readonly StepId[]
   orientation?: StepperOrientation
+  /**
+   * Length of the line between two circles, as a CSS length or a bare number of rem.
+   *
+   * Left out, a horizontal stepper simply shares its container out between the steps; give it a
+   * length and the steps stop growing there, which is how you keep the shape in a container far
+   * wider than the stepper needs. Either way a narrow container squeezes them rather than being
+   * overflowed. A vertical stepper has no width to share, so it falls back to 3.125rem.
+   */
+  lineLength?: number | string
   /** Defaults to `true` when `onStepChange` is given. */
   isInteractive?: boolean
   onStepChange?: (stepIndex: number, step: TStep) => void
@@ -111,5 +120,7 @@ export type StepperViewModel<TStep extends StepItem = StepItem> = {
   hasLabelUnderIcon: boolean
   connectorElement: ReactElement | null
   rootProps: StepperRootProps
+  /** Carries `lineLength` to the styles as a custom property. */
+  rootStyle: CSSProperties | undefined
   stepModels: StepRenderModel<TStep>[]
 }

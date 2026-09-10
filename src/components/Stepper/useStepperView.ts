@@ -19,6 +19,7 @@ import {
   buildStepViews,
   resolveAriaCurrent,
   resolveStepperRootProps,
+  resolveLineLengthStyle,
   resolveStepStatusLabels,
   toCompletedStepIdSet,
 } from './stepper.utils'
@@ -31,6 +32,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
   defaultActiveStepIndex = 0,
   completedStepIds,
   orientation = 'horizontal',
+  lineLength,
   isInteractive,
   onStepChange,
   resolveStepStatus,
@@ -104,6 +106,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
     hasLabelUnderIcon: orientation === 'horizontal',
     connectorElement: renderStepConnectorElement(orientation),
     rootProps: resolveStepperRootProps(isStepperInteractive),
+    rootStyle: resolveLineLengthStyle(lineLength),
     stepModels,
   }
 }

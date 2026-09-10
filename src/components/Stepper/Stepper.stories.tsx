@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
@@ -68,6 +69,27 @@ const NonLinearCheckoutWizard = (stepperProps: StepperProps) => {
   )
 }
 
+const CONTAINER_WIDTHS = ['100%', '34rem', '19rem']
+
+/** Same stepper in three container widths, once left to fill and once held to `lineLength`. */
+const LineLengthShowcase = (stepperProps: StepperProps) => (
+  <Stack spacing={4}>
+    {CONTAINER_WIDTHS.map((width) => (
+      <Stack key={width} spacing={1}>
+        <Typography variant="overline" color="text.secondary">
+          kontener {width}
+        </Typography>
+        <Box sx={{ width, outline: '1px dashed', outlineColor: 'divider', p: 2 }}>
+          <Stack spacing={3}>
+            <Stepper {...stepperProps} lineLength={undefined} />
+            <Stepper {...stepperProps} />
+          </Stack>
+        </Box>
+      </Stack>
+    ))}
+  </Stack>
+)
+
 const meta = {
   title: 'Components/Stepper',
   component: Stepper,
@@ -101,6 +123,12 @@ const meta = {
     activeStepIndex: { control: { type: 'number', min: 0, max: steps.length - 1 } },
     defaultActiveStepIndex: { control: { type: 'number', min: 0 } },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
+    lineLength: {
+      control: { type: 'number', min: 0, step: 0.5 },
+      description:
+        'Długość kreski między kółkami, w remach. Bez niej poziomy stepper rozkłada się ' +
+        'równomiernie na całą szerokość kontenera.',
+    },
     isInteractive: { control: 'boolean' },
     completedStepIds: { control: false },
     stepStatusLabels: { control: false },
@@ -163,6 +191,18 @@ export const HoverAccent: Story = {
 /** Non-linear: completion comes from `completedStepIds`, so a skipped step gets no check. */
 export const NonLinear: Story = {
   render: (args) => <NonLinearCheckoutWizard {...args} />,
+}
+
+/**
+ * Left alone the steps share their container out between them, so the stepper follows whatever
+ * width it is given. `lineLength` caps how far they grow, which is how the stepper keeps its
+ * shape in a container far wider than it needs — the upper stepper in each box has no length set,
+ * the lower one is held to the value in the control. A narrow container squeezes both rather than
+ * being overflowed.
+ */
+export const LineLength: Story = {
+  args: { lineLength: 6, steps: steps.map(({ id, label }) => ({ id, label })) },
+  render: (args) => <LineLengthShowcase {...args} />,
 }
 
 /** `step.icon` replaces the check and the number for a single step. */

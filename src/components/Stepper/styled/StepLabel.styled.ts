@@ -10,9 +10,11 @@ import { stepperSizes } from './stepper.sizes'
  */
 export const StyledVisuallyHiddenText = styled('span')({
   position: 'absolute',
-  width: 1,
-  height: 1,
-  margin: -1,
+  // The one place px is right rather than rem: this box is clipped away and never rendered, so
+  // it wants a single device pixel, not a length that scales with the type.
+  width: '1px',
+  height: '1px',
+  margin: '-1px',
   padding: 0,
   border: 0,
   overflow: 'hidden',
