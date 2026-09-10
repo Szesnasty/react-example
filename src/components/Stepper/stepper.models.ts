@@ -19,6 +19,11 @@ export type StepItem = {
   content?: ReactNode
   icon?: ReactNode
   disabled?: boolean
+  /**
+   * Id of the section this step reveals. Clickable steps are tabs, and MUI asks each of them to
+   * point at the content it controls.
+   */
+  controlsElementId?: string
 }
 
 export type StepView<TStep extends StepItem = StepItem> = {
@@ -97,12 +102,12 @@ export type StepBodyElements = {
   iconElement: ReactNode
   labelElement: ReactNode
   captionElement: ReactNode
+  controlsElementId?: string
   onSelect?: () => void
 }
 
 /** A step with everything already resolved — the stepper only maps it to markup. */
 export type StepRenderModel<TStep extends StepItem = StepItem> = StepView<TStep> & {
-  key: StepId
   isActive: boolean
   isCompleted: boolean
   ariaCurrent: 'step' | undefined

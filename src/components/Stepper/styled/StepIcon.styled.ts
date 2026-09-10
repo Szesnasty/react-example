@@ -2,16 +2,20 @@ import { styled } from '@mui/material'
 import { stepButtonClasses } from '@mui/material/StepButton'
 
 import { CheckIcon } from '../../../assets/icons'
-import type { StepStatus } from '../stepper.models'
 import { reducedMotionTransitionReset } from './reducedMotion'
-import { createShouldForwardProp } from './shouldForwardProp'
 import { stepIconStatusColors } from './stepper.colors'
+import type { StepIconStatusColors } from './stepper.colors'
 import { stepperSizes } from './stepper.sizes'
 
-export const StyledStepIconRoot = styled('span', {
-  shouldForwardProp: createShouldForwardProp('status'),
-})<{ status: StepStatus }>(({ theme, status }) => {
-  const statusColors = stepIconStatusColors(theme)[status]
+/** Only the circle reacts to hover, and only inside a button — a step that is not clickable has none. */
+const statusRule = ({ background, foreground, hoverBackground }: StepIconStatusColors) => ({
+  backgroundColor: background,
+  color: foreground,
+  [`.${stepButtonClasses.root} &:hover`]: { backgroundColor: hoverBackground },
+})
+
+export const StyledStepIconRoot = styled('span')(({ theme }) => {
+  const statusColors = stepIconStatusColors(theme)
 
   return {
     boxSizing: 'border-box',
@@ -22,8 +26,6 @@ export const StyledStepIconRoot = styled('span', {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '50%',
-    backgroundColor: statusColors.background,
-    color: statusColors.foreground,
     fontSize: stepperSizes.checkIconSize,
     // Stated explicitly: this component never draws a ring or a border around a circle, so a
     // stray one always comes from somewhere else.
@@ -34,11 +36,11 @@ export const StyledStepIconRoot = styled('span', {
     }),
     ...reducedMotionTransitionReset,
 
-    // Only the circle reacts to hover, and only on a step that is actually clickable — the button
-    // in the selector limits it, and a disabled one has `pointer-events: none` anyway.
-    [`.${stepButtonClasses.root} &:hover`]: {
-      backgroundColor: statusColors.hoverBackground,
-    },
+    // The status is already on the element for tests and for styling from outside, so the circle
+    // reads its colours from there instead of taking a prop that then has to be kept off the DOM.
+    '&[data-status="completed"]': statusRule(statusColors.completed),
+    '&[data-status="active"]': statusRule(statusColors.active),
+    '&[data-status="upcoming"]': statusRule(statusColors.upcoming),
   }
 })
 

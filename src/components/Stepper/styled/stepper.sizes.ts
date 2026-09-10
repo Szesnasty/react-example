@@ -5,6 +5,8 @@
  * by `typography.fontSize / 14` — in a theme that sets its own font size that helper would
  * quietly resize the whole component (with `fontSize: 16` a 24px circle comes out as 27.4px).
  */
+import type { CSSProperties } from 'react'
+
 /**
  * How much room one step takes along the stepper, set on the root from the `lineLength` prop.
  * Left unset, each orientation falls back to its own default — see where it is read.
@@ -58,4 +60,27 @@ export const stepperSizes = {
   verticalLabelFontSize: '1rem', // 16px
   verticalLabelLineHeight: '1.5rem', // 24px
   verticalLabelParagraphGap: '0rem', // 0px
+}
+
+/** A bare number means rem — this component states every length in rem. */
+const toCssLength = (value: number | string): string => {
+  if (typeof value === 'number') {
+    return `${value}rem`
+  }
+
+  return value
+}
+
+/**
+ * Turns `lineLength` into the room one step takes: the line plus the circle and its two gaps.
+ * One custom property then drives both orientations.
+ */
+export const resolveStepSizeStyle = (lineLength?: number | string): CSSProperties | undefined => {
+  if (lineLength === undefined) {
+    return undefined
+  }
+
+  return {
+    [STEP_SIZE_VAR]: `calc(${stepperSizes.iconWithGaps} + ${toCssLength(lineLength)})`,
+  } as CSSProperties
 }

@@ -1,6 +1,3 @@
-import type { CSSProperties } from 'react'
-
-import { STEP_SIZE_VAR, stepperSizes } from './styled/stepper.sizes'
 import type {
   StepId,
   StepItem,
@@ -95,11 +92,6 @@ export const resolveStepStatusLabels = (
   overrides?: Partial<StepStatusLabels>,
 ): StepStatusLabels => ({ ...DEFAULT_STEP_STATUS_LABELS, ...overrides })
 
-export const areStepsInteractive = (
-  isInteractive: boolean | undefined,
-  hasStepChangeHandler: boolean,
-): boolean => isInteractive ?? hasStepChangeHandler
-
 /**
  * Clickable steps are a tablist, where `aria-selected` already marks the current tab. Adding
  * `aria-current` there would restore the role of the presentational list item and break the
@@ -123,27 +115,4 @@ export const resolveStepperRootProps = (isInteractive: boolean): StepperRootProp
   }
 
   return { role: 'list' }
-}
-
-/** A bare number means rem — this component states every length in rem. */
-const toCssLength = (value: number | string): string => {
-  if (typeof value === 'number') {
-    return `${value}rem`
-  }
-
-  return value
-}
-
-/**
- * Turns `lineLength` into the room one step takes: the line plus the circle and its two gaps.
- * One custom property then drives both orientations.
- */
-export const resolveStepSizeStyle = (lineLength?: number | string): CSSProperties | undefined => {
-  if (lineLength === undefined) {
-    return undefined
-  }
-
-  return {
-    [STEP_SIZE_VAR]: `calc(${stepperSizes.iconWithGaps} + ${toCssLength(lineLength)})`,
-  } as CSSProperties
 }

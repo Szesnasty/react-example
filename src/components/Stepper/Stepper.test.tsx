@@ -3,12 +3,13 @@ import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { CssBaseline } from '@mui/material'
-import { ThemeProvider } from '@mui/material'
+import { decomposeColor, recomposeColor, ThemeProvider } from '@mui/material'
 import { stepLabelClasses } from '@mui/material/StepLabel'
 
 import { Stepper } from './Stepper'
 import type { StepItem } from './stepper.models'
 import { DEFAULT_STEP_STATUS_LABELS } from './stepper.utils'
+import { stepIconStatusColors } from './styled/stepper.colors'
 import { theme } from '../../theme'
 
 const steps: StepItem[] = [
@@ -27,6 +28,9 @@ const renderInTheme = (ui: ReactElement) =>
       {ui}
     </ThemeProvider>,
   )
+
+/** Computed styles come back as `rgb()`, while the palette states its colours as hex. */
+const toRgb = (color: string) => recomposeColor(decomposeColor(color))
 
 const stepStatuses = (container: HTMLElement) =>
   Array.from(container.querySelectorAll('[data-status]')).map((node) =>
@@ -66,6 +70,19 @@ describe('Stepper', () => {
 
     for (const icon of container.querySelectorAll('[data-status]')) {
       expect(icon).toHaveTextContent('')
+    }
+  })
+
+  it('paints every circle from the palette', () => {
+    const { container } = renderInTheme(<Stepper steps={steps} activeStepIndex={2} />)
+    const paletteColors = stepIconStatusColors(theme)
+
+    for (const icon of container.querySelectorAll('[data-status]')) {
+      const status = icon.getAttribute('data-status') as keyof typeof paletteColors
+      const { backgroundColor, color } = getComputedStyle(icon)
+
+      expect(backgroundColor).toBe(toRgb(paletteColors[status].background))
+      expect(color).toBe(toRgb(paletteColors[status].foreground))
     }
   })
 

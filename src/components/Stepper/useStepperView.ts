@@ -14,14 +14,13 @@ import {
   renderStepLabelElement,
 } from './stepper.renderers'
 import {
-  areStepsInteractive,
   buildStepViews,
   resolveAriaCurrent,
   resolveStepperRootProps,
-  resolveStepSizeStyle,
   resolveStepStatusLabels,
   toCompletedStepIdSet,
 } from './stepper.utils'
+import { resolveStepSizeStyle } from './styled'
 import { useStepper } from './useStepper'
 
 /** Turns the stepper props into ready-to-render steps, so the component itself stays markup only. */
@@ -45,7 +44,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
     defaultActiveStepIndex,
   })
 
-  const isStepperInteractive = areStepsInteractive(isInteractive, Boolean(onStepChange))
+  const isStepperInteractive = isInteractive ?? Boolean(onStepChange)
 
   const selectStep = useCallback(
     (view: StepView<TStep>) => () => {
@@ -74,7 +73,6 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
 
     return stepViews.map((view) => ({
       ...view,
-      key: view.step.id,
       isActive: view.status === 'active',
       isCompleted: view.status === 'completed',
       ariaCurrent: resolveAriaCurrent(view.status, isStepperInteractive),
@@ -82,6 +80,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
         iconElement: renderStepIconElement(view, renderStepIcon),
         labelElement: renderStepLabelElement(view, statusLabels[view.status], renderStepLabel),
         captionElement: view.step.caption,
+        controlsElementId: view.step.controlsElementId,
         onSelect: isStepperInteractive ? selectStep(view) : undefined,
       }),
       contentElement: renderStepContentElement(view, orientation),

@@ -26,7 +26,7 @@ export const Stepper = <TStep extends StepItem = StepItem>(stepperProps: Stepper
     >
       {stepModels.map((stepModel) => (
         <StyledStep
-          key={stepModel.key}
+          key={stepModel.step.id}
           active={stepModel.isActive}
           completed={stepModel.isCompleted}
           disabled={stepModel.isDisabled}

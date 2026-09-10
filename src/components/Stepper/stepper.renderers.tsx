@@ -62,6 +62,7 @@ export const renderStepBodyElement = ({
   iconElement,
   labelElement,
   captionElement,
+  controlsElementId,
   onSelect,
 }: StepBodyElements) => {
   if (!onSelect) {
@@ -80,6 +81,7 @@ export const renderStepBodyElement = ({
       onClick={onSelect}
       icon={iconElement}
       optional={captionElement}
+      aria-controls={controlsElementId}
       // The ripple would wash over the label too; feedback stays on the circle.
       disableRipple
     >

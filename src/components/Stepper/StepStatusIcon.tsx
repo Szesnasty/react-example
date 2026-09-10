@@ -15,7 +15,7 @@ export type StepStatusIconProps = {
  * the status the stepper renders next to the label.
  */
 export const StepStatusIcon = ({ status, icon, className }: StepStatusIconProps) => (
-  <StyledStepIconRoot status={status} data-status={status} className={className} aria-hidden="true">
+  <StyledStepIconRoot data-status={status} className={className} aria-hidden="true">
     <StepIconGlyph status={status} icon={icon} />
   </StyledStepIconRoot>
 )

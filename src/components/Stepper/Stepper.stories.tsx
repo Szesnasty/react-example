@@ -22,6 +22,8 @@ const stepsWithContent: StepItem[] = steps.map((step) => ({
   content: `Treść kroku „${String(step.label)}”.`,
 }))
 
+const CHECKOUT_PANEL_ID = 'checkout-panel'
+
 const CheckoutWizard = (stepperProps: StepperProps) => {
   const { activeStepIndex, isFirstStep, isLastStep, goToNextStep, goToPreviousStep, goToStep } =
     useStepper({
@@ -31,7 +33,18 @@ const CheckoutWizard = (stepperProps: StepperProps) => {
 
   return (
     <Stack spacing={3}>
-      <Stepper {...stepperProps} activeStepIndex={activeStepIndex} onStepChange={goToStep} />
+      <Stepper
+        {...stepperProps}
+        steps={stepperProps.steps.map((step) => ({
+          ...step,
+          controlsElementId: CHECKOUT_PANEL_ID,
+        }))}
+        activeStepIndex={activeStepIndex}
+        onStepChange={goToStep}
+      />
+      <Paper variant="outlined" id={CHECKOUT_PANEL_ID} role="tabpanel" sx={{ p: 2 }}>
+        <Typography>{stepperProps.steps[activeStepIndex].label}</Typography>
+      </Paper>
       <Stack direction="row" spacing={1}>
         <Button variant="outlined" onClick={goToPreviousStep} disabled={isFirstStep}>
           Wstecz
@@ -186,10 +199,16 @@ export const Interactive: Story = {
   render: (args) => <CheckoutWizard {...args} />,
 }
 
-/** Hover accent: only the circle gets a ring, the label and the space around it stay untouched. */
+/**
+ * Hover darkens the circle and nothing else — the label and the space around it stay untouched.
+ *
+ * `storybook-addon-pseudo-states` holds the completed circles in their hover state so the shade
+ * can be compared with the untouched ones next to them; the addon does not run on the Docs page,
+ * which is why the same story looks unhovered there.
+ */
 export const HoverAccent: Story = {
   args: { isInteractive: true },
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['[data-status="completed"]'] } },
   render: (args) => (
     <Stack spacing={4}>
       <Stepper {...args} />
@@ -215,7 +234,7 @@ export const LineLength: Story = {
   render: (args) => <LineLengthShowcase {...args} />,
 }
 
-/** `step.icon` replaces the check and the number for a single step. */
+/** `step.icon` takes the place of the check inside the circle. */
 export const CustomIcon: Story = {
   args: {
     steps: steps.map((step, index) => ({ ...step, icon: ['🛒', '🚚', '💳', '✅'][index] })),
@@ -250,7 +269,7 @@ export const TranslatedStatusLabels: Story = {
 
 export const OnSurface: Story = {
   render: (args) => (
-    <Paper variant="outlined" sx={{ p: 3, maxWidth: 720 }}>
+    <Paper variant="outlined" sx={{ p: 3, maxWidth: '45rem' }}>
       <Stepper {...args} />
     </Paper>
   ),
