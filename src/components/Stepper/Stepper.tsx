@@ -32,6 +32,7 @@ export const Stepper = <TStep extends StepItem = StepItem>(stepperProps: Stepper
           completed={stepModel.isCompleted}
           disabled={stepModel.isDisabled}
           aria-current={stepModel.ariaCurrent}
+          data-step-status={stepModel.status}
         >
           {stepModel.bodyElement}
           {stepModel.contentElement}

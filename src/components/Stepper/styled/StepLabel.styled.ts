@@ -71,5 +71,12 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
 
   [`&&.${stepLabelClasses.vertical} .${stepLabelClasses.label}.${stepLabelClasses.active}`]: {
     color: activeStepLabelColor(theme),
+    fontWeight: theme.typography.fontWeightMedium,
+  },
+
+  // The caption is a bare text node in the label container, which carries no state class of its
+  // own, so the current step is recognised from the data attribute on the step above it.
+  [`[data-step-status="active"] &.${stepLabelClasses.vertical} .${stepLabelClasses.labelContainer}`]: {
+    color: activeStepLabelColor(theme),
   },
 }))

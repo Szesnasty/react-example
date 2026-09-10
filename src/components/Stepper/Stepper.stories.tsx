@@ -69,6 +69,9 @@ const NonLinearCheckoutWizard = (stepperProps: StepperProps) => {
   )
 }
 
+/** The canvas runs the full width of the screen; a stepper that fills it looks stretched. */
+const STORY_MAX_WIDTH = '44rem'
+
 const CONTAINER_WIDTHS = ['100%', '34rem', '19rem']
 
 /** Same stepper in three container widths, once left to fill and once held to `lineLength`. */
@@ -94,6 +97,13 @@ const meta = {
   title: 'Components/Stepper',
   component: Stepper,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <Box sx={{ maxWidth: STORY_MAX_WIDTH }}>
+        <Story />
+      </Box>
+    ),
+  ],
   args: {
     steps,
     activeStepIndex: 2,
