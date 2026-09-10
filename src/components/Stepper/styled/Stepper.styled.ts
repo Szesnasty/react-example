@@ -1,13 +1,20 @@
 import { styled } from '@mui/material'
 import MuiStep, { stepClasses } from '@mui/material/Step'
 import { stepButtonClasses } from '@mui/material/StepButton'
-import MuiStepper from '@mui/material/Stepper'
+import MuiStepper, { stepperClasses } from '@mui/material/Stepper'
 
 import { stepLineColor } from './stepper.colors'
 import { LINE_LENGTH_VAR, stepperSizes } from './stepper.sizes'
 
 export const StyledStepper = styled(MuiStepper)(({ theme }) => ({
   padding: `${stepperSizes.rootPaddingBlock} 0`,
+
+  // Lets the steps share out a container that has a height of its own. Against an auto-height
+  // parent a percentage height resolves to `auto`, so this changes nothing there.
+  [`&.${stepperClasses.vertical}`]: {
+    boxSizing: 'border-box',
+    height: '100%',
+  },
 
   // MUI detects its tablist mode by `StepButton` identity, so the button cannot be
   // wrapped in `styled` — it is styled from here through its slot class instead.
@@ -33,7 +40,7 @@ export const StyledStepper = styled(MuiStepper)(({ theme }) => ({
 }))
 
 /** Circle, a gap on either side of the line, and the line itself. */
-const stepWidth = (fallbackLineLength: string) =>
+const stepSize = (fallbackLineLength: string) =>
   `calc(${stepperSizes.iconSize} + ${stepperSizes.lineEndGap} * 2 + var(${LINE_LENGTH_VAR}, ${fallbackLineLength}))`
 
 export const StyledStep = styled(MuiStep)(({ theme }) => ({
@@ -50,8 +57,8 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 'auto',
-    width: stepWidth('0rem'),
-    maxWidth: stepWidth(stepperSizes.unboundedLineLength),
+    width: stepSize('0rem'),
+    maxWidth: stepSize(stepperSizes.unboundedLineLength),
     minWidth: 0,
     boxSizing: 'border-box',
     padding: 0,
@@ -62,9 +69,17 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
 
   [`&.${stepClasses.vertical}`]: {
     position: 'relative',
-    minHeight: stepWidth(stepperSizes.verticalLineLength),
+    // The same bargain as lying down: the steps share out a container tall enough to give them
+    // room, and `lineLength` caps how far they stretch. With nothing to share they settle on the
+    // default line length rather than collapsing onto the labels.
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 'auto',
+    height: stepSize(stepperSizes.verticalLineLength),
+    maxHeight: stepSize(stepperSizes.unboundedLineLength),
 
-    '&:last-of-type': { minHeight: 0 },
+    // The last step has no line under it, so growing it would only pad the bottom.
+    '&:last-of-type': { flexGrow: 0, height: 'auto', maxHeight: 'none' },
 
     // MUI's vertical connector is a fixed-height flex item, so it cannot span the gap between
     // two circles. Drawing the line on the step lets it stretch however tall the step grows.
@@ -72,7 +87,7 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
       content: '""',
       position: 'absolute',
       top: `calc(${stepperSizes.iconSize} + ${stepperSizes.lineEndGap})`,
-      height: `var(${LINE_LENGTH_VAR}, ${stepperSizes.verticalLineLength})`,
+      bottom: stepperSizes.lineEndGap,
       left: stepperSizes.lineOffset,
       width: stepperSizes.connectorThickness,
       borderRadius: stepperSizes.connectorThickness,
