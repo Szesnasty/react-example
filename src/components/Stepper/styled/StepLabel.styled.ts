@@ -1,7 +1,7 @@
 import { styled } from '@mui/material'
 import MuiStepLabel, { stepLabelClasses } from '@mui/material/StepLabel'
 
-import { stepLabelStatusColors } from './stepper.colors'
+import { stepLabelColor } from './stepper.colors'
 import { stepperSizes } from './stepper.sizes'
 
 /**
@@ -21,67 +21,48 @@ export const StyledVisuallyHiddenText = styled('span')({
   display: 'block',
 })
 
-export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => {
-  const statusColors = stepLabelStatusColors(theme)
+export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
+  // Type size is the only thing the two orientations style differently.
+  [`&.${stepLabelClasses.vertical}`]: {
+    padding: 0,
+    alignItems: 'flex-start',
 
-  return {
-    [`&.${stepLabelClasses.vertical}`]: {
-      padding: 0,
-      alignItems: 'flex-start',
-
-      [`& .${stepLabelClasses.iconContainer}`]: {
-        paddingRight: stepperSizes.verticalIconGap,
-      },
-      [`& .${stepLabelClasses.labelContainer}`]: {
-        paddingTop: stepperSizes.verticalLabelCapOffset,
-        alignItems: 'flex-start',
-        gap: stepperSizes.verticalLabelParagraphGap,
-        fontSize: stepperSizes.verticalLabelFontSize,
-        lineHeight: stepperSizes.verticalLabelLineHeight,
-      },
+    [`& .${stepLabelClasses.iconContainer}`]: {
+      paddingRight: stepperSizes.verticalIconGap,
     },
-
-    [`&.${stepLabelClasses.alternativeLabel}`]: {
-      [`& .${stepLabelClasses.labelContainer}`]: {
-        alignItems: 'center',
-        gap: stepperSizes.horizontalLabelParagraphGap,
-        fontSize: stepperSizes.horizontalLabelFontSize,
-        lineHeight: stepperSizes.horizontalLabelLineHeight,
-      },
-    },
-
     [`& .${stepLabelClasses.labelContainer}`]: {
-      display: 'flex',
-      flexDirection: 'column',
-      minWidth: 0,
-      overflowWrap: 'break-word',
-      color: statusColors.upcoming,
-      fontWeight: theme.typography.fontWeightRegular,
+      paddingTop: stepperSizes.verticalLabelCapOffset,
+      alignItems: 'flex-start',
+      gap: stepperSizes.verticalLabelParagraphGap,
+      fontSize: stepperSizes.verticalLabelFontSize,
+      lineHeight: stepperSizes.verticalLabelLineHeight,
     },
+  },
 
-    // Horizontal keeps every title the same colour; only the weight marks the active step.
-    [`& .${stepLabelClasses.label}`]: {
-      color: statusColors.completed,
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      fontWeight: theme.typography.fontWeightRegular,
-
-      [`&.${stepLabelClasses.active}`]: {
-        fontWeight: theme.typography.fontWeightBold,
-      },
+  [`&.${stepLabelClasses.alternativeLabel}`]: {
+    [`& .${stepLabelClasses.labelContainer}`]: {
+      alignItems: 'center',
+      gap: stepperSizes.horizontalLabelParagraphGap,
+      fontSize: stepperSizes.horizontalLabelFontSize,
+      lineHeight: stepperSizes.horizontalLabelLineHeight,
     },
+  },
 
-    // Vertical is where the state also shows in the colour of the title.
-    [`&.${stepLabelClasses.vertical} .${stepLabelClasses.label}`]: {
-      [`&.${stepLabelClasses.completed}`]: {
-        color: statusColors.completed,
-      },
-      [`&.${stepLabelClasses.active}`]: {
-        color: statusColors.active,
-      },
-      [`&.${stepLabelClasses.disabled}`]: {
-        color: statusColors.upcoming,
-      },
-    },
-  }
-})
+  [`& .${stepLabelClasses.labelContainer}`]: {
+    display: 'flex',
+    flexDirection: 'column',
+    minWidth: 0,
+    overflowWrap: 'break-word',
+    color: stepLabelColor(theme),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+
+  // `&&` outweighs MUI's own `.MuiStepLabel-label.Mui-active` colour and weight, which a
+  // single-`&` selector would only tie with — leaving the winner up to stylesheet order.
+  [`&& .${stepLabelClasses.label}`]: {
+    color: stepLabelColor(theme),
+    fontSize: 'inherit',
+    lineHeight: 'inherit',
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}))

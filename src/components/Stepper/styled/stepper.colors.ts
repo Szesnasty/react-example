@@ -31,11 +31,8 @@ export const stepIconStatusColors = (theme: Theme): Record<StepStatus, StepIconS
   },
 })
 
-export const stepLabelStatusColors = (theme: Theme): Record<StepStatus, string> => ({
-  completed: theme.palette.text.primary,
-  active: theme.palette.primary.main,
-  upcoming: theme.palette.text.secondary,
-})
+/** One colour for every label, whatever the step's status or the orientation. */
+export const stepLabelColor = (theme: Theme) => theme.palette.grey[500]
 
 /** Progress is carried by the circles, so the lines stay one neutral colour throughout. */
 export const stepLineColor = (theme: Theme) => theme.palette.grey[200]
