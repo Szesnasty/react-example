@@ -7,14 +7,14 @@ import { stepIconStatusColors } from './stepper.colors'
 import type { StepIconStatusColors } from './stepper.colors'
 import { stepperSizes } from './stepper.sizes'
 
-const statusRule = ({ background, foreground, hoverBackground }: StepIconStatusColors) => ({
+const paintCircle = ({ background, foreground, hoverBackground }: StepIconStatusColors) => ({
   backgroundColor: background,
   color: foreground,
   [`.${stepButtonClasses.root} &:hover`]: { backgroundColor: hoverBackground },
 })
 
 export const StyledStepIconRoot = styled('span')(({ theme }) => {
-  const statusColors = stepIconStatusColors(theme)
+  const colorsByStatus = stepIconStatusColors(theme)
 
   return {
     boxSizing: 'border-box',
@@ -33,9 +33,9 @@ export const StyledStepIconRoot = styled('span')(({ theme }) => {
     }),
     ...reducedMotionTransitionReset,
 
-    '&[data-status="completed"]': statusRule(statusColors.completed),
-    '&[data-status="active"]': statusRule(statusColors.active),
-    '&[data-status="upcoming"]': statusRule(statusColors.upcoming),
+    '&[data-status="completed"]': paintCircle(colorsByStatus.completed),
+    '&[data-status="active"]': paintCircle(colorsByStatus.active),
+    '&[data-status="upcoming"]': paintCircle(colorsByStatus.upcoming),
   }
 })
 

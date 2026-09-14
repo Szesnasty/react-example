@@ -93,13 +93,13 @@ export type StepperProps<TStep extends StepItem = StepItem> = {
   /** Defaults to `horizontal`. */
   orientation?: StepperOrientation
   /**
-   * Length of the line between two circles, as a CSS length or a bare number of rem.
+   * Length of the line between two circles, in rem.
    *
    * Left out, the steps simply share out their container. Given, they stop growing at that length,
    * which is how the stepper keeps its shape in a container far wider than it needs. Either way a
    * narrow container squeezes them rather than being overflowed.
    */
-  lineLength?: number | string
+  lineLength?: number
   /**
    * Makes the steps clickable. Without it they are a plain list that cannot be navigated, so this
    * is also the switch between tab and list semantics for screen readers.

@@ -137,16 +137,6 @@ describe('Stepper', () => {
     })
   })
 
-  it('takes a CSS length for lineLength as it is', () => {
-    const { container } = renderInTheme(
-      <Stepper steps={steps} activeStepIndex={1} lineLength="9rem" />,
-    )
-
-    expect(container.querySelector('ol')).toHaveStyle({
-      '--stepper-step-size': 'calc(2.25rem + 9rem)',
-    })
-  })
-
   it('handles an empty list of steps', () => {
     const { container } = renderInTheme(<Stepper steps={[]} activeStepIndex={0} />)
 

@@ -34,20 +34,12 @@ export const stepperSizes = {
   verticalLabelParagraphGap: '0rem',
 }
 
-const toCssLength = (value: number | string): string => {
-  if (typeof value === 'number') {
-    return `${value}rem`
-  }
-
-  return value
-}
-
-export const resolveStepSizeStyle = (lineLength?: number | string): CSSProperties | undefined => {
+export const resolveStepSizeStyle = (lineLength?: number): CSSProperties | undefined => {
   if (lineLength === undefined) {
     return undefined
   }
 
   return {
-    [STEP_SIZE_VAR]: `calc(${stepperSizes.iconWithGaps} + ${toCssLength(lineLength)})`,
+    [STEP_SIZE_VAR]: `calc(${stepperSizes.iconWithGaps} + ${lineLength}rem)`,
   } as CSSProperties
 }
