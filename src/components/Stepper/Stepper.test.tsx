@@ -106,12 +106,6 @@ describe('Stepper', () => {
     expect(stepStatuses(container)).toEqual(['completed', 'completed', 'completed', 'active'])
   })
 
-  it('tracks the active step itself when activeStep is not given', () => {
-    const { container } = renderInTheme(<Stepper steps={steps} defaultActiveStepIndex={1} />)
-
-    expect(stepStatuses(container)).toEqual(['completed', 'active', 'upcoming', 'upcoming'])
-  })
-
   it('blocks a step marked disabled even when it is already behind us', () => {
     const withDisabled = steps.map((step) =>
       step.id === 'cart' ? { ...step, disabled: true } : step,
@@ -153,7 +147,7 @@ describe('Stepper', () => {
   })
 
   it('handles an empty list of steps', () => {
-    const { container } = renderInTheme(<Stepper steps={[]} />)
+    const { container } = renderInTheme(<Stepper steps={[]} activeStepIndex={0} />)
 
     expect(within(container).queryAllByRole('listitem')).toHaveLength(0)
   })
@@ -281,15 +275,17 @@ describe('Stepper — interactive mode', () => {
     expect(screen.queryAllByRole('tab')).toHaveLength(0)
   })
 
-  it('moves to the clicked step on its own when uncontrolled', async () => {
+  it('leaves the current step to the caller when a step is clicked', async () => {
     const user = userEvent.setup()
+    const onStepChange = vi.fn()
     const { container } = renderInTheme(
-      <Stepper steps={steps} defaultActiveStepIndex={2} onStepChange={vi.fn()} />,
+      <Stepper steps={steps} activeStepIndex={2} onStepChange={onStepChange} />,
     )
 
     await user.click(screen.getByRole('tab', { name: /Koszyk/ }))
 
-    expect(stepStatuses(container)).toEqual(['active', 'upcoming', 'upcoming', 'upcoming'])
+    expect(onStepChange).toHaveBeenCalledWith(0, steps[0])
+    expect(stepStatuses(container)).toEqual(['completed', 'completed', 'active', 'upcoming'])
   })
 })
 

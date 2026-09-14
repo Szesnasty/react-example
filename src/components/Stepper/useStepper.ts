@@ -3,30 +3,31 @@ import { useCallback, useMemo, useState } from 'react'
 import type { UseStepperApi, UseStepperOptions } from './stepper.models'
 import { clampStepIndex } from './stepper.utils'
 
+/**
+ * Holds the current step and the moves around it, so buttons outside the stepper share its state.
+ *
+ * @example
+ * const { activeStepIndex, goToStep, goToNextStep, isLastStep } = useStepper({
+ *   totalSteps: steps.length,
+ * })
+ */
 export const useStepper = ({
   totalSteps,
-  activeStepIndex: controlledActiveStepIndex,
   defaultActiveStepIndex = 0,
   onActiveStepIndexChange,
 }: UseStepperOptions): UseStepperApi => {
-  const [uncontrolledActiveStepIndex, setUncontrolledActiveStepIndex] = useState(() =>
+  const [selectedStepIndex, setSelectedStepIndex] = useState(() =>
     clampStepIndex(defaultActiveStepIndex, totalSteps),
   )
 
-  const isControlled = controlledActiveStepIndex !== undefined
-  const activeStepIndex = clampStepIndex(
-    isControlled ? controlledActiveStepIndex : uncontrolledActiveStepIndex,
-    totalSteps,
-  )
+  const activeStepIndex = clampStepIndex(selectedStepIndex, totalSteps)
   const lastStepIndex = Math.max(totalSteps - 1, 0)
 
   const goToStep = useCallback(
     (stepIndex: number) => {
       const targetStepIndex = clampStepIndex(stepIndex, totalSteps)
 
-      if (!isControlled) {
-        setUncontrolledActiveStepIndex(targetStepIndex)
-      }
+      setSelectedStepIndex(targetStepIndex)
 
       if (targetStepIndex === activeStepIndex) {
         return
@@ -34,7 +35,7 @@ export const useStepper = ({
 
       onActiveStepIndexChange?.(targetStepIndex)
     },
-    [activeStepIndex, isControlled, onActiveStepIndexChange, totalSteps],
+    [activeStepIndex, onActiveStepIndexChange, totalSteps],
   )
 
   return useMemo(

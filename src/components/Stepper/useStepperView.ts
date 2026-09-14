@@ -15,42 +15,33 @@ import {
 } from './stepper.renderers'
 import {
   buildStepViews,
+  clampStepIndex,
   resolveAriaCurrent,
   resolveStepperRootProps,
   resolveStepStatusLabels,
   toCompletedStepIdSet,
 } from './stepper.utils'
 import { resolveStepSizeStyle } from './styled'
-import { useStepper } from './useStepper'
 
+/** Turns the stepper props into ready-to-render steps, so the component itself stays markup only. */
 export const useStepperView = <TStep extends StepItem = StepItem>({
   steps,
-  activeStepIndex: controlledActiveStepIndex,
-  defaultActiveStepIndex = 0,
+  activeStepIndex,
   completedStepIds,
   orientation = 'horizontal',
   lineLength,
-  isInteractive,
   onStepChange,
   resolveStepStatus,
   renderStepIcon,
   renderStepLabel,
   stepStatusLabels,
 }: StepperProps<TStep>): StepperViewModel<TStep> => {
-  const { activeStepIndex, goToStep } = useStepper({
-    totalSteps: steps.length,
-    activeStepIndex: controlledActiveStepIndex,
-    defaultActiveStepIndex,
-  })
-
-  const isStepperInteractive = isInteractive ?? Boolean(onStepChange)
+  const currentStepIndex = clampStepIndex(activeStepIndex, steps.length)
+  const isStepperInteractive = Boolean(onStepChange)
 
   const selectStep = useCallback(
-    (view: StepView<TStep>) => () => {
-      goToStep(view.index)
-      onStepChange?.(view.index, view.step)
-    },
-    [goToStep, onStepChange],
+    (view: StepView<TStep>) => () => onStepChange?.(view.index, view.step),
+    [onStepChange],
   )
 
   const completedStepIdSet = useMemo(
@@ -65,7 +56,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
 
   const stepModels = useMemo<StepRenderModel<TStep>[]>(() => {
     const stepViews = buildStepViews(steps, {
-      activeStepIndex,
+      activeStepIndex: currentStepIndex,
       completedStepIds: completedStepIdSet,
       resolveStatus: resolveStepStatus,
     })
@@ -85,8 +76,8 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
       contentElement: renderStepContentElement(view, orientation),
     }))
   }, [
-    activeStepIndex,
     completedStepIdSet,
+    currentStepIndex,
     isStepperInteractive,
     orientation,
     renderStepIcon,
@@ -98,7 +89,7 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
   ])
 
   return {
-    activeStepIndex,
+    activeStepIndex: currentStepIndex,
     orientation,
     hasLabelUnderIcon: orientation === 'horizontal',
     rootProps: resolveStepperRootProps(isStepperInteractive),

@@ -38,16 +38,15 @@ export const StyledStepper = styled(MuiStepper)(({ theme }) => ({
   },
 }))
 
-const lineHalf = (theme: Theme) => ({
+const lineHalf = {
   content: '""',
   position: 'absolute' as const,
-  backgroundColor: stepLineColor(theme),
-})
+}
 
 const horizontalLineHalf = (theme: Theme) => ({
-  ...lineHalf(theme),
+  ...lineHalf,
   top: `calc((${stepperSizes.iconSize} - ${stepperSizes.connectorThickness}) / 2)`,
-  height: stepperSizes.connectorThickness,
+  borderTop: `${stepperSizes.connectorThickness} solid ${stepLineColor(theme)}`,
 })
 
 export const StyledStep = styled(MuiStep)(({ theme }) => ({
@@ -80,11 +79,11 @@ export const StyledStep = styled(MuiStep)(({ theme }) => ({
     '&:last-of-type': { flexGrow: 0, height: 'auto', maxHeight: 'none' },
 
     '&:not(:last-of-type)::before': {
-      ...lineHalf(theme),
+      ...lineHalf,
       top: `calc(${stepperSizes.iconSize} + ${stepperSizes.lineEndGap})`,
       bottom: stepperSizes.lineEndGap,
       left: stepperSizes.lineOffset,
-      width: stepperSizes.connectorThickness,
+      borderLeft: `${stepperSizes.connectorThickness} solid ${stepLineColor(theme)}`,
     },
   },
 }))

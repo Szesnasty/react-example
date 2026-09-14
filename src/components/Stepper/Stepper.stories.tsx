@@ -143,11 +143,7 @@ const meta = {
     },
     activeStepIndex: {
       control: { type: 'number', min: 0, max: steps.length - 1 },
-      description: 'Tryb kontrolowany. Bez tego stepper sam pilnuje bieżącego kroku.',
-    },
-    defaultActiveStepIndex: {
-      control: { type: 'number', min: 0 },
-      description: 'Krok początkowy w trybie niekontrolowanym.',
+      description: 'Bieżący krok. Stepper go tylko odzwierciedla — stanem zarządza rodzic.',
     },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
     lineLength: {
@@ -155,10 +151,6 @@ const meta = {
       description:
         'Długość kreski między kółkami, w remach. Bez niej poziomy stepper rozkłada się ' +
         'równomiernie na całą szerokość kontenera.',
-    },
-    isInteractive: {
-      control: 'boolean',
-      description: 'Domyślnie `true`, gdy podano `onStepChange`.',
     },
     completedStepIds: {
       control: false,
@@ -223,7 +215,6 @@ export const Interactive: Story = {
  * which is why the same story looks unhovered there.
  */
 export const HoverAccent: Story = {
-  args: { isInteractive: true },
   parameters: { pseudo: { hover: ['[data-status="completed"]'] } },
   render: (args) => (
     <Stack spacing={4}>
@@ -284,6 +275,14 @@ export const TranslatedStatusLabels: Story = {
       upcoming: 'not available yet',
     },
   },
+}
+
+/**
+ * Bez `onStepChange` kroki nie są klikalne: stepper zostaje zwykłą listą z `aria-current="step"`
+ * zamiast zakładek. To tryb dla wskaźnika postępu, po którym nie da się nawigować.
+ */
+export const ReadOnly: Story = {
+  args: { onStepChange: undefined },
 }
 
 export const OnSurface: Story = {
