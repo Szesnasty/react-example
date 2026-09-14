@@ -8,7 +8,6 @@ export type StepIconGlyphProps = {
   icon?: ReactNode
 }
 
-/** What sits inside the circle: a custom icon, a check once the step is done, otherwise nothing. */
 export const StepIconGlyph = ({ status, icon }: StepIconGlyphProps) => {
   if (icon) {
     return icon

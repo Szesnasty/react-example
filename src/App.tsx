@@ -1,6 +1,5 @@
 import { Box, Container, Typography } from '@mui/material'
 
-/** Punkt startowy aplikacji — miejsce na pierwszy własny komponent. */
 export default function App() {
   return (
     <Box sx={{ minHeight: '100dvh', bgcolor: 'background.default' }}>

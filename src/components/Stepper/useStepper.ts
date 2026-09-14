@@ -3,7 +3,6 @@ import { useCallback, useMemo, useState } from 'react'
 import type { UseStepperApi, UseStepperOptions } from './stepper.models'
 import { clampStepIndex } from './stepper.utils'
 
-/** Step navigation, controlled or not. Exported so buttons outside the stepper share its state. */
 export const useStepper = ({
   totalSteps,
   activeStepIndex: controlledActiveStepIndex,

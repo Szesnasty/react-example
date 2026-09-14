@@ -1,68 +1,39 @@
-/**
- * Every size is a rem literal, with the px it renders to at a 16px root in the comment.
- *
- * They are written out rather than derived through `theme.typography.pxToRem`, which multiplies
- * by `typography.fontSize / 14` — in a theme that sets its own font size that helper would
- * quietly resize the whole component (with `fontSize: 16` a 24px circle comes out as 27.4px).
- */
 import type { CSSProperties } from 'react'
 
-/**
- * How much room one step takes along the stepper, set on the root from the `lineLength` prop.
- * Left unset, each orientation falls back to its own default — see where it is read.
- */
 export const STEP_SIZE_VAR = '--stepper-step-size'
 
 export const stepperSizes = {
-  /** The circle is the same size in both orientations. */
-  iconSize: '1.5rem', // 24px
-  /** The box the check sits in; the glyph inside it measures 8 x 5.5px. */
-  checkIconSize: '0.75rem', // 12px
+  iconSize: '1.5rem',
+  checkIconSize: '0.75rem',
 
-  connectorThickness: '0.0625rem', // 1px
-  /** How far a line stops short of a circle, in both orientations. */
-  lineEndGap: '0.375rem', // 6px
-  /** Left edge of a vertical line: half the circle minus half the line, so it runs through the centre. */
-  lineOffset: '0.71875rem', // 11.5px
-  /** How far a horizontal line starts from the centre of its step: half the circle plus the end gap. */
-  lineInset: '1.125rem', // 18px
+  connectorThickness: '0.0625rem',
+  lineEndGap: '0.375rem',
+  lineOffset: '0.71875rem',
+  lineInset: '1.125rem',
 
-  /** Kept apart from the line: a 1px focus ring would be too faint to spot. */
-  focusOutlineWidth: '0.125rem', // 2px
-  focusOutlineOffset: '0.125rem', // 2px
+  focusOutlineWidth: '0.125rem',
+  focusOutlineOffset: '0.125rem',
 
-  rootPaddingBlock: '0.5rem', // 8px
-  /** Breathing room on either side of a horizontal step, so neighbouring labels never touch. */
-  horizontalStepPaddingInline: '0.5rem', // 8px
-  buttonPaddingBlock: '0.25rem', // 4px
-  buttonPaddingInline: '0.5rem', // 8px
+  rootPaddingBlock: '0.5rem',
+  horizontalStepPaddingInline: '0.5rem',
+  buttonPaddingBlock: '0.25rem',
+  buttonPaddingInline: '0.5rem',
 
-  /** Gap between the circle and the text beside it. */
-  verticalIconGap: '0.75rem', // 12px
-  /** Left edge of the step content: the circle plus that gap. */
-  verticalContentIndent: '2.25rem', // 36px
-  /** A circle with a gap on either side: what a step takes up before any line is added. */
-  iconWithGaps: '2.25rem', // 36px
-  /** How tall a step is standing up when `lineLength` says nothing: `iconWithGaps` plus 50px. */
-  verticalStepSize: '5.375rem', // 86px
-  /**
-   * Pushes a vertical label down so the tops of its letters sit 10px below the top of the circle:
-   * that 10px minus where Poppins puts a capital inside a 1rem/1.5rem line box.
-   * Measured against a rendered page.
-   */
-  verticalLabelCapOffset: '0.228rem', // 3.65px
+  verticalIconGap: '0.75rem',
+  verticalContentIndent: '2.25rem',
+  iconWithGaps: '2.25rem',
+  verticalStepSize: '5.375rem',
+  verticalLabelCapOffset: '0.228rem',
 
-  horizontalLabelFontSize: '0.875rem', // 14px
-  horizontalLabelLineHeight: '1.25rem', // 20px
-  /** Space between the title and the caption under it. */
-  horizontalLabelParagraphGap: '0.875rem', // 14px
+  horizontalLabelFontSize: '0.875rem',
+  horizontalLabelLineHeight: '1.25rem',
+  horizontalLabelParagraphGap: '0.875rem',
 
-  verticalLabelFontSize: '1rem', // 16px
-  verticalLabelLineHeight: '1.5rem', // 24px
-  verticalLabelParagraphGap: '0rem', // 0px
+  verticalLabelFontSize: '1rem',
+  verticalLabelLineHeight: '1.5rem',
+  verticalLabelParagraphGap: '0rem',
 }
 
-/** A bare number means rem — this component states every length in rem. */
 const toCssLength = (value: number | string): string => {
   if (typeof value === 'number') {
     return `${value}rem`
@@ -71,10 +42,6 @@ const toCssLength = (value: number | string): string => {
   return value
 }
 
-/**
- * Turns `lineLength` into the room one step takes: the line plus the circle and its two gaps.
- * One custom property then drives both orientations.
- */
 export const resolveStepSizeStyle = (lineLength?: number | string): CSSProperties | undefined => {
   if (lineLength === undefined) {
     return undefined

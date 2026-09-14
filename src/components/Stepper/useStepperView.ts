@@ -23,7 +23,6 @@ import {
 import { resolveStepSizeStyle } from './styled'
 import { useStepper } from './useStepper'
 
-/** Turns the stepper props into ready-to-render steps, so the component itself stays markup only. */
 export const useStepperView = <TStep extends StepItem = StepItem>({
   steps,
   activeStepIndex: controlledActiveStepIndex,

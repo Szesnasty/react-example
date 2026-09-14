@@ -12,16 +12,8 @@ type StoryComponent = ComponentType & {
 
 type StoriesModule = Parameters<typeof composeStories>[0]
 
-/**
- * Wszystkie pliki `*.stories.tsx` z `src/` — nowy komponent trafia tu sam,
- * bez dopisywania go do listy.
- */
 const modules = import.meta.glob<StoriesModule>('../**/*.stories.tsx', { eager: true })
 
-/**
- * Każda historia musi się wyrenderować (i przejść swoje `play`),
- * inaczej konfiguracja Storybooka lub dekoratory się rozjechały.
- */
 describe('storybook smoke', () => {
   it('konfiguracja preview ładuje się', () => {
     expect(previewAnnotations.decorators).toBeDefined()

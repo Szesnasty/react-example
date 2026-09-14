@@ -73,16 +73,12 @@ export const renderStepBodyElement = ({
     )
   }
 
-  // `icon` and `optional` belong on the button: StepButton clones the label with its
-  // own props and would overwrite anything set on StyledStepLabel directly. The element also
-  // has to stay a direct child of the step, or MUI will not switch to its tablist mode.
   return (
     <MuiStepButton
       onClick={onSelect}
       icon={iconElement}
       optional={captionElement}
       aria-controls={controlsElementId}
-      // The ripple would wash over the label too; feedback stays on the circle.
       disableRipple
     >
       <StyledStepLabel>{labelElement}</StyledStepLabel>

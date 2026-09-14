@@ -10,10 +10,6 @@ export type StepStatusIconProps = {
   className?: string
 }
 
-/**
- * The circle is hidden from assistive tech: it carries no text, and its check duplicates
- * the status the stepper renders next to the label.
- */
 export const StepStatusIcon = ({ status, icon, className }: StepStatusIconProps) => (
   <StyledStepIconRoot data-status={status} className={className} aria-hidden="true">
     <StepIconGlyph status={status} icon={icon} />

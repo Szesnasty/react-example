@@ -13,7 +13,6 @@ import {
   stepLabelColor,
 } from './styled/stepper.colors'
 
-/** WCAG 1.4.3 level AA for text below 18.66px, which is what the labels use. */
 const MINIMUM_CONTRAST_RATIO = 4.5
 
 const STEP_STATUSES: StepStatus[] = ['completed', 'active', 'upcoming']
@@ -24,7 +23,6 @@ const steps: StepItem[] = [
   { id: 'payment', label: 'Płatność', caption: 'Wybierz metodę' },
 ]
 
-/** MUI palette text colours are semi-transparent, so they must be flattened before measuring. */
 const flattenOverBackground = (foreground: string, background: string) => {
   const foregroundColor = decomposeColor(foreground)
   const backgroundColor = decomposeColor(background)
@@ -84,7 +82,6 @@ const stepperVariants: Record<string, ReactElement> = {
   ),
 }
 
-/** Contrast is covered above instead: jsdom cannot resolve rendered colours for axe. */
 const axeOptions: axe.RunOptions = { rules: { 'color-contrast': { enabled: false } } }
 
 describe('Stepper axe audit', () => {

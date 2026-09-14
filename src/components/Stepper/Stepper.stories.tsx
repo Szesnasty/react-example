@@ -82,12 +82,10 @@ const NonLinearCheckoutWizard = (stepperProps: StepperProps) => {
   )
 }
 
-/** The canvas runs the full width of the screen; a stepper that fills it looks stretched. */
 const STORY_MAX_WIDTH = '44rem'
 
 const CONTAINER_WIDTHS = ['100%', '34rem', '19rem']
 
-/** Same stepper in three container widths, once left to fill and once held to `lineLength`. */
 const LineLengthShowcase = (stepperProps: StepperProps) => (
   <Stack spacing={4}>
     {CONTAINER_WIDTHS.map((width) => (
@@ -143,8 +141,14 @@ const meta = {
         },
       },
     },
-    activeStepIndex: { control: { type: 'number', min: 0, max: steps.length - 1 } },
-    defaultActiveStepIndex: { control: { type: 'number', min: 0 } },
+    activeStepIndex: {
+      control: { type: 'number', min: 0, max: steps.length - 1 },
+      description: 'Tryb kontrolowany. Bez tego stepper sam pilnuje bieżącego kroku.',
+    },
+    defaultActiveStepIndex: {
+      control: { type: 'number', min: 0 },
+      description: 'Krok początkowy w trybie niekontrolowanym.',
+    },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
     lineLength: {
       control: { type: 'number', min: 0, step: 0.5 },
@@ -152,9 +156,21 @@ const meta = {
         'Długość kreski między kółkami, w remach. Bez niej poziomy stepper rozkłada się ' +
         'równomiernie na całą szerokość kontenera.',
     },
-    isInteractive: { control: 'boolean' },
-    completedStepIds: { control: false },
-    stepStatusLabels: { control: false },
+    isInteractive: {
+      control: 'boolean',
+      description: 'Domyślnie `true`, gdy podano `onStepChange`.',
+    },
+    completedStepIds: {
+      control: false,
+      description:
+        'Włącza tryb nieliniowy: ukończenie bierze się z tej listy zamiast z pozycji kroku, ' +
+        'a żaden krok nie jest blokowany tym, że stoi przed bieżącym.',
+    },
+    stepStatusLabels: {
+      control: false,
+      description:
+        'Nadpisuje treść statusu czytaną przez czytniki ekranu, np. żeby ją przetłumaczyć.',
+    },
     onStepChange: { action: 'onStepChange' },
     resolveStepStatus: { control: false },
     renderStepIcon: { control: false },

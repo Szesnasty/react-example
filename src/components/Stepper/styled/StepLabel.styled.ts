@@ -4,14 +4,8 @@ import MuiStepLabel, { stepLabelClasses } from '@mui/material/StepLabel'
 import { activeStepLabelColor, stepLabelColor } from './stepper.colors'
 import { stepperSizes } from './stepper.sizes'
 
-/**
- * Carries the step status for screen readers, since colour and the check alone do not convey it.
- * `display: block` is what makes the accessible name separate it from the label with a space.
- */
 export const StyledVisuallyHiddenText = styled('span')({
   position: 'absolute',
-  // The one place px is right rather than rem: this box is clipped away and never rendered, so
-  // it wants a single device pixel, not a length that scales with the type.
   width: '1px',
   height: '1px',
   margin: '-1px',
@@ -24,8 +18,6 @@ export const StyledVisuallyHiddenText = styled('span')({
 })
 
 export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
-  // Type size is the only thing the two orientations style differently, apart from the
-  // current step's title standing out in the main colour when the stepper is vertical.
   [`&.${stepLabelClasses.vertical}`]: {
     padding: 0,
     alignItems: 'flex-start',
@@ -54,21 +46,16 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
   [`& .${stepLabelClasses.labelContainer}`]: {
     display: 'flex',
     flexDirection: 'column',
-    // Without this a label with no break in it keeps its own width and runs into its neighbours.
     overflowWrap: 'break-word',
     color: stepLabelColor(theme),
     fontWeight: theme.typography.fontWeightRegular,
   },
 
-  // `&&` outweighs MUI's own `.MuiStepLabel-label.Mui-active` colour and weight, which a
-  // single-`&` selector would only tie with — leaving the winner up to stylesheet order.
   [`&& .${stepLabelClasses.label}`]: {
     color: stepLabelColor(theme),
     fontSize: 'inherit',
     lineHeight: 'inherit',
     fontWeight: theme.typography.fontWeightRegular,
-    // A flex item in the column, so without this it keeps its own width and spills over a step
-    // too narrow for it instead of wrapping into one.
     maxWidth: '100%',
   },
 
@@ -77,8 +64,6 @@ export const StyledStepLabel = styled(MuiStepLabel)(({ theme }) => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
 
-  // The caption is a bare text node in the label container, which carries no state class of its
-  // own, so the current step is recognised from the data attribute on the step above it.
   [`[data-step-status="active"] &.${stepLabelClasses.vertical} .${stepLabelClasses.labelContainer}`]: {
     color: activeStepLabelColor(theme),
   },

@@ -9,7 +9,6 @@ import type {
   StepView,
 } from './stepper.models'
 
-/** Wording is announced, never shown, so it carries the state that colour alone would encode. */
 export const DEFAULT_STEP_STATUS_LABELS: StepStatusLabels = {
   completed: 'krok ukończony',
   active: 'krok bieżący',
@@ -29,7 +28,6 @@ export const toCompletedStepIdSet = (
   return new Set(completedStepIds)
 }
 
-/** "Where you are" beats "what you finished", so the active step keeps its number even once completed. */
 export const resolveStepStatus = <TStep extends StepItem>({
   step,
   index,
@@ -40,7 +38,6 @@ export const resolveStepStatus = <TStep extends StepItem>({
     return 'active'
   }
 
-  // A blocked step is never shown as done — it looks like one we cannot reach yet.
   if (step.disabled) {
     return 'upcoming'
   }
@@ -52,7 +49,6 @@ export const resolveStepStatus = <TStep extends StepItem>({
   return index < activeStepIndex ? 'completed' : 'upcoming'
 }
 
-/** Only a linear stepper blocks a step by its position; non-linear lets you enter anywhere. */
 export const isStepDisabled = <TStep extends StepItem>(
   step: TStep,
   status: StepStatus,
@@ -104,11 +100,6 @@ export const resolveStepStatusLabels = (
   overrides?: Partial<StepStatusLabels>,
 ): StepStatusLabels => ({ ...DEFAULT_STEP_STATUS_LABELS, ...overrides })
 
-/**
- * Clickable steps are a tablist, where `aria-selected` already marks the current tab. Adding
- * `aria-current` there would restore the role of the presentational list item and break the
- * tablist/tab relationship, so it is only used for a plain list of steps.
- */
 export const resolveAriaCurrent = (status: StepStatus, isInteractive: boolean) => {
   if (isInteractive || status !== 'active') {
     return undefined
@@ -117,10 +108,6 @@ export const resolveAriaCurrent = (status: StepStatus, isInteractive: boolean) =
   return 'step' as const
 }
 
-/**
- * `list-style: none` drops list semantics in Safari. Clickable steps become a tablist instead,
- * and the role has to be absent rather than `undefined`, or it overwrites the one MUI sets.
- */
 export const resolveStepperRootProps = (isInteractive: boolean): StepperRootProps => {
   if (isInteractive) {
     return {}

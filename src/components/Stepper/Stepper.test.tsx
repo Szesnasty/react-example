@@ -29,7 +29,6 @@ const renderInTheme = (ui: ReactElement) =>
     </ThemeProvider>,
   )
 
-/** Computed styles come back as `rgb()`, while the palette states its colours as hex. */
 const toRgb = (color: string) => recomposeColor(decomposeColor(color))
 
 const stepStatuses = (container: HTMLElement) =>
