@@ -6,6 +6,7 @@ import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/600.css'
 import '../src/index.css'
+import '../src/i18n'
 
 import { theme } from '../src/theme'
 import { viewports } from './viewports'

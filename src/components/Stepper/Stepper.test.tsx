@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import i18next from 'i18next'
 import { CssBaseline } from '@mui/material'
 import { decomposeColor, recomposeColor, ThemeProvider } from '@mui/material'
 import { stepLabelClasses } from '@mui/material/StepLabel'
@@ -181,6 +182,19 @@ describe('Stepper — accessibility', () => {
 
     expect(screen.getByText('current step')).toBeInTheDocument()
     expect(screen.getAllByText(DEFAULT_STEP_STATUS_LABELS.upcoming)).toHaveLength(3)
+  })
+
+  it('takes the announced status from the active language', async () => {
+    await i18next.changeLanguage('en')
+
+    try {
+      renderInTheme(<Stepper steps={steps} activeStepIndex={1} />)
+
+      expect(screen.getByText('current step')).toBeInTheDocument()
+      expect(screen.getAllByText('step not available yet')).toHaveLength(2)
+    } finally {
+      await i18next.changeLanguage('pl')
+    }
   })
 
   it('hides the decorative circle from assistive tech', () => {

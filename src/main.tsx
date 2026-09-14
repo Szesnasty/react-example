@@ -7,6 +7,7 @@ import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/600.css'
 import './index.css'
+import './i18n'
 
 import App from './App'
 import { theme } from './theme'

@@ -66,7 +66,9 @@ Handled for you:
 
 - clickable steps become a tablist with roving arrow-key navigation; without `onStepChange` the
   steps are a plain list with `role="list"` and `aria-current="step"`
-- each label carries a visually hidden status, so the state never rests on colour alone
+- each label carries a visually hidden status, so the state never rests on colour alone; the
+  wording comes from i18next under `stepper.status.*`, with the Polish default built in, and
+  `stepStatusLabels` overrides it for one instance
 
 Yours to do: give each step a `controlsElementId` pointing at the element it reveals, and name the
 stepper with `aria-label`. MUI asks every clickable step to name the section it controls.

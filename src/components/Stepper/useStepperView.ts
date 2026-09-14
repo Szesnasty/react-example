@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type {
   StepItem,
   StepRenderModel,
   StepperProps,
   StepperViewModel,
+  StepStatusLabels,
   StepView,
 } from './stepper.models'
 import {
@@ -18,7 +20,8 @@ import {
   clampStepIndex,
   resolveAriaCurrent,
   resolveStepperRootProps,
-  resolveStepStatusLabels,
+  DEFAULT_STEP_STATUS_LABELS,
+  STEP_STATUS_TRANSLATION_KEYS,
   toCompletedStepIdSet,
 } from './stepper.utils'
 import { resolveStepSizeStyle } from './styled'
@@ -49,9 +52,16 @@ export const useStepperView = <TStep extends StepItem = StepItem>({
     [completedStepIds],
   )
 
-  const statusLabels = useMemo(
-    () => resolveStepStatusLabels(stepStatusLabels),
-    [stepStatusLabels],
+  const { t } = useTranslation()
+
+  const statusLabels = useMemo<StepStatusLabels>(
+    () => ({
+      completed: t(STEP_STATUS_TRANSLATION_KEYS.completed, DEFAULT_STEP_STATUS_LABELS.completed),
+      active: t(STEP_STATUS_TRANSLATION_KEYS.active, DEFAULT_STEP_STATUS_LABELS.active),
+      upcoming: t(STEP_STATUS_TRANSLATION_KEYS.upcoming, DEFAULT_STEP_STATUS_LABELS.upcoming),
+      ...stepStatusLabels,
+    }),
+    [stepStatusLabels, t],
   )
 
   const stepModels = useMemo<StepRenderModel<TStep>[]>(() => {

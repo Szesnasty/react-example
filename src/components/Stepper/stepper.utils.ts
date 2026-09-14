@@ -9,6 +9,12 @@ import type {
   StepView,
 } from './stepper.models'
 
+export const STEP_STATUS_TRANSLATION_KEYS: Record<StepStatus, string> = {
+  completed: 'stepper.status.completed',
+  active: 'stepper.status.active',
+  upcoming: 'stepper.status.upcoming',
+}
+
 export const DEFAULT_STEP_STATUS_LABELS: StepStatusLabels = {
   completed: 'krok ukończony',
   active: 'krok bieżący',
@@ -95,10 +101,6 @@ export const buildStepViews = <TStep extends StepItem>(
     }
   })
 }
-
-export const resolveStepStatusLabels = (
-  overrides?: Partial<StepStatusLabels>,
-): StepStatusLabels => ({ ...DEFAULT_STEP_STATUS_LABELS, ...overrides })
 
 export const resolveAriaCurrent = (status: StepStatus, isInteractive: boolean) => {
   if (isInteractive || status !== 'active') {
